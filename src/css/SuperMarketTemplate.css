@@ -2,9 +2,10 @@
     width: 768px;
     display: flex;
     border: 5px solid black;
+    margin-top:1rem;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 3rem;
+    height:600px;
   }
   
   .SuperMarketTemplate h2 {

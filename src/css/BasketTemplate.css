@@ -1,0 +1,23 @@
+.BasketTemplate {
+    width: 768px;
+    display: flex;
+    border: 5px solid black;
+    margin-top:1rem;
+    margin-left: auto;
+    margin-right: auto;
+    height:600px;
+  }
+  
+  .BasketTemplate h2 {
+    margin-top: 0;
+    margin-bottom: 3rem;
+  }
+  
+  .BasketTemplate>div {
+    padding: 1rem 5rem;
+    flex: 1;
+  }
+  
+  .BasketTemplate .basket-wrapper {
+    background: #f8f9fa;
+  }
