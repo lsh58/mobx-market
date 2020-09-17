@@ -3,7 +3,7 @@ import BasketTemplate from './BasketTemplate';
 import BasketItemList from './BasketItemList';
 import TotalPrice from './TotalPrice';
 
-const Basket = () => {
+const Basket: React.FC  = () => {
   return (
     <BasketTemplate
       basket={<BasketItemList />}

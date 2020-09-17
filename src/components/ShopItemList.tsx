@@ -55,7 +55,7 @@ const items = [
 ];
 
 // **** onPut 함수 추가됨
-const ShopItemList = ({ onPut }) => {
+const ShopItemList = ({ onPut } : any) => {
   const itemList = items.map(item => (
     <ShopItem {...item} key={item.name} onPut={onPut} />
   ));

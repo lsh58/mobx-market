@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 
 @inject(({ market }) => ({ total: market.total }))
 @observer
-class TotalPrice extends Component<{total:number}> {
+class TotalPrice extends Component<{total:any}> {
   render() {
     const { total } = this.props;
     return (

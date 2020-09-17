@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/ShopItem.css';
 
-const ShopItem = ({ name, price, onPut }) => {
+const ShopItem = ({ name, price, onPut } : {name:string, price:number, onPut:any}) => {
   return (
     <div className="ShopItem" onClick={() => onPut(name, price)}>
       <h4>{name}</h4>

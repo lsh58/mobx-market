@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/BasketTemplate.css';
 
-const BasketTemplate = ({ basket, total }) => {
+const BasketTemplate = ({ basket, total } : any) => {
   return (
     <div className="BasketTemplate">
       <div className="basket-wrapper">
