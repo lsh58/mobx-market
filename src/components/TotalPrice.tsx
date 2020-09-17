@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { observer, inject } from 'mobx-react';
 
-@inject(({ market }) => ({ total: market.total }))
-@observer
-class TotalPrice extends Component<{total:any}> {
-  render() {
-    const { total } = this.props;
+const TotalPrice: React.FC<{total:any}> =({total}) => {
     return (
       <div>
         <hr />
@@ -14,7 +10,8 @@ class TotalPrice extends Component<{total:any}> {
         </p>
       </div>
     );
-  }
 }
 
-export default TotalPrice;
+export default inject(({ market }) => ({
+  total: market.total
+}))(observer(TotalPrice));
