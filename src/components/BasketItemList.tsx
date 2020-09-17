@@ -1,29 +1,28 @@
 import React from 'react';
 import BasketItem from './BasketItem';
-import { inject, observer } from 'mobx-react';
-import { CartProductItem, ProductItem } from '../models';
+import { useMarketStore } from '../stores/market';
+import { useObserver } from 'mobx-react'
 
-
-interface BasketItemProps {
-  items?: CartProductItem[];
-  onTake?: (product: ProductItem) => void;
-  onIncrease?: (product: ProductItem) => void;
-  onDecrease?: (product: ProductItem) => void;
+function useUserData() {
+  const ctx = useMarketStore()
+  return useObserver(()=>({
+    items: ctx.selectedItems,
+    onTake: ctx.take,
+    onIncrease : ctx.increase,
+    onDecrease : ctx.decrease
+  }))
 }
 
-const BasketItemList: React.FC<BasketItemProps>  = ({ items, onTake, onIncrease, onDecrease }) => {
-  if(items)return( 
-  <div>
-    {items.map( item => (
-    <BasketItem item={item} key={item.name} onTake={onTake} onIncrease={onIncrease} onDecrease={onDecrease} />
-  ))}
-  </div>);
-  return null;
+const BasketItemList: React.FC = () => {
+  const { items, onTake, onIncrease, onDecrease } = useUserData()
+  return useObserver(()=> 
+  items ? ( 
+    <div>
+      {items.map( (item:any) => (
+        <BasketItem item={item} key={item.name} onTake={onTake} onIncrease={onIncrease} onDecrease={onDecrease} />
+      ))}
+    </div>)
+    : null)
 };
 
-export default inject(({ market }) => ({
-  items: market.selectedItems,
-  onTake: market.take,
-  onIncrease : market.increase,
-  onDecrease : market.decrease
-}))(observer(BasketItemList));
+export default BasketItemList;

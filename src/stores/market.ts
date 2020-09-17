@@ -1,4 +1,6 @@
 import { observable, action, computed } from 'mobx';
+import { MobXProviderContext } from 'mobx-react';
+import { useContext } from 'react';
 import { ProductItem, CartProductItem } from '../models'
 
 export default class MarketStore {
@@ -21,7 +23,7 @@ export default class MarketStore {
   @action
   take = (product:ProductItem): void  => {
     const itemToTake = this.selectedItems.findIndex(item => item.name !== product.name);
-    this.selectedItems.splice(itemToTake,1);// 배열에서 제거처리합니다.
+    this.selectedItems.splice(itemToTake-1,1);// 배열에서 제거처리합니다.
   };
 
   @action
@@ -52,4 +54,9 @@ export default class MarketStore {
       return previous + current.price * current.count;
     }, 0);
   }
+}
+
+export const useMarketStore= ()=>{
+  const ctx = useContext(MobXProviderContext);
+  return ctx.market;
 }
