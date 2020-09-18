@@ -2,24 +2,15 @@ import React from 'react';
 import BasketItem from './BasketItem';
 import { useMarketStore } from '../stores/market';
 import { useObserver } from 'mobx-react'
-
-function useUserData() {
-  const ctx = useMarketStore()
-  return useObserver(()=>({
-    items: ctx.selectedItems,
-    onTake: ctx.take,
-    onIncrease : ctx.increase,
-    onDecrease : ctx.decrease
-  }))
-}
+import { CartProductItem } from '../models';
 
 const BasketItemList: React.FC = () => {
-  const { items, onTake, onIncrease, onDecrease } = useUserData()
+  const market = useMarketStore();
   return useObserver(()=> 
-  items ? ( 
+  market.selectedItems ? ( 
     <div>
-      {items.map( (item:any) => (
-        <BasketItem item={item} key={item.name} onTake={onTake} onIncrease={onIncrease} onDecrease={onDecrease} />
+      {market.selectedItems.map( (item:CartProductItem) => (
+        <BasketItem item={item} key={item.name} onTake={market.take} onIncrease={market.increase} onDecrease={market.decrease} />
       ))}
     </div>)
     : null)

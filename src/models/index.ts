@@ -6,6 +6,7 @@ export interface ProductItem {
 export interface CartProductItem extends ProductItem {
     name: string;
     price : number;
+    isInCart : boolean;
     count: number;
 }
 

@@ -6,15 +6,14 @@ import Grid from '@material-ui/core/Grid';
 const useStyles = makeStyles((theme:Theme) => ({
   root: {
     width:'70%',
-    margin:'1rem auto',
-    border:'1px solid #000',
+    margin:'0 auto',
   },
   container: {
-    padding:'5rem 1rem',
+    padding:'1rem 1rem',
   }
 }));
 
-const SuperMarketTemplate = ({ items }: any) => {
+const SuperMarketTemplate = ({ items }: {items:JSX.Element}) => {
   const classes = useStyles();
   return (
     <Box className={classes.root}>

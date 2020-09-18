@@ -12,22 +12,17 @@ const useStyles = makeStyles((theme:Theme) => ({  // style 요소 선언
     }
   }
 }));
-function useUserData() {
-  const ctx = useMarketStore()
-  return useObserver(()=>({
-    total : ctx.total
-  }))
-}
+
 const TotalPrice: React.FC =() => {
+  const market  = useMarketStore();
   const classes = useStyles();
-  const { total } = useUserData()
-  return (
+  return useObserver(()=>(
       <div className={classes.root}>
         <p>
-          <b>총합: </b> {total}원
+          <b>총합: </b> {market.total}원
         </p>
       </div>
-    );
+    ));
 }
 
 export default TotalPrice;

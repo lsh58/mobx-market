@@ -15,11 +15,12 @@ const useStyles = makeStyles((theme:Theme) => ({  // style 요소 선언
     width:'70%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: '3rem',
+    marginTop: '1rem',
   },
   rootNav: {    
     display: 'flex',
     justifyContent: 'space-between',
+    padding:'1rem',
   },
   link:{
     textDecoration: 'none',

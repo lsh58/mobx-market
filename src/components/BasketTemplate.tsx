@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme:Theme) => ({  // style 요소 선언
   },  
 }));
 
-const BasketTemplate = ({ basket, total } : any) => {
+const BasketTemplate = ({ basket, total } : {basket:React.ReactNode, total:React.ReactNode}) => {
   const classes = useStyles();
     return (
     <div className={classes.root}>
