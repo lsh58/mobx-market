@@ -2,9 +2,10 @@ import { observable, action, computed } from 'mobx';
 import { MobXProviderContext } from 'mobx-react';
 import { useContext } from 'react';
 import { ProductItem, CartProductItem } from '../models'
+import { persist } from 'mobx-persist'
 
 export default class MarketStore {
-  @observable selectedItems:CartProductItem[] = [];
+  @persist('list') @observable selectedItems:CartProductItem[] = [];
 
   @action
   put = (name:string, price:number) : void => {
@@ -22,8 +23,8 @@ export default class MarketStore {
 
   @action
   take = (product:ProductItem): void  => {
-    const itemToTake = this.selectedItems.findIndex(item => item.name !== product.name);
-    this.selectedItems.splice(itemToTake-1,1);// 배열에서 제거처리합니다.
+    const itemToTake = this.selectedItems.findIndex(item => item.name === product.name);
+    this.selectedItems.splice(itemToTake,1);// 배열에서 제거처리합니다.
   };
 
   @action
@@ -32,11 +33,12 @@ export default class MarketStore {
     if(itemToChange){
       //-버튼이 눌리면 수량 1감소
       itemToChange.count--;
-    if (itemToChange.count === 0) {
-      // 갯수가 0 이면
-      const itemToTake = this.selectedItems.findIndex(item => item.name !== product.name);
-      this.selectedItems.splice(itemToTake-1,1);// 배열에서 제거처리합니다.
-    }}
+      if (itemToChange.count === 0) {
+        const itemToTake = this.selectedItems.findIndex(item => item.name === product.name);
+        // 갯수가 0 이면
+        this.selectedItems.splice(itemToTake,1);// 배열에서 제거처리합니다.
+    }
+  }
   };
 
   @action

@@ -1,29 +1,27 @@
 import React from 'react';
-import { makeStyles } from "@material-ui/core/styles"; // styles 기능 추가
+import { makeStyles, Theme } from "@material-ui/core/styles"; 
+import Box  from "@material-ui/core/Box"; 
+import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(theme => ({  // style 요소 선언
+const useStyles = makeStyles((theme:Theme) => ({
   root: {
     width:'70%',
-    display: 'flex',
-    border: '1px solid black',
     margin:'1rem auto',
-    height:'600px',
+    border:'1px solid #000',
   },
-  itemsWrapper: {
-    width:'100%',
-    background: '#f8f9fa',
-    margin:'1rem auto',
-  },  
+  container: {
+    padding:'5rem 1rem',
+  }
 }));
 
 const SuperMarketTemplate = ({ items }: any) => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <div className={classes.itemsWrapper}>
+    <Box className={classes.root}>
+      <Grid  className={classes.container} container spacing={2}>
         {items}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 };
 

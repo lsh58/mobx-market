@@ -7,10 +7,10 @@ import {
   Switch,
   NavLink,
 } from 'react-router-dom';
-import { makeStyles } from "@material-ui/core/styles"; // styles 기능 추가
+import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
 import Button  from "@material-ui/core/Button"; // styles 기능 추가
 
-const useStyles = makeStyles(theme => ({  // style 요소 선언
+const useStyles = makeStyles((theme:Theme) => ({  // style 요소 선언
   root: {
     width:'70%',
     marginLeft: 'auto',

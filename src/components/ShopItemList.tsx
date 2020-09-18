@@ -1,7 +1,14 @@
 import React from 'react';
 import ShopItem from './ShopItem';
-import { inject, observer } from 'mobx-react'; // 불러오기
-import '../css/ShopItemList.css';
+import { useMarketStore } from '../stores/market';
+import { useObserver } from 'mobx-react'
+
+function useUserData() {
+  const ctx = useMarketStore()
+  return useObserver(()=>({
+    onPut : ctx.put
+  }))
+}
 
 const items = [
   {
@@ -55,14 +62,14 @@ const items = [
 ];
 
 // **** onPut 함수 추가됨
-const ShopItemList = ({ onPut } : any) => {
+const ShopItemList = () => {
+  const { onPut } = useUserData()
   const itemList = items.map(item => (
     <ShopItem {...item} key={item.name} onPut={onPut} />
   ));
-  return <div className="shopItemWrapper">{itemList}</div>;
+  return useObserver(()=> (
+    <>{itemList}</>
+  ));
 };
 
-// **** inject, observer 적용
-export default inject(({ market }) => ({
-  onPut: market.put,
-}))(observer(ShopItemList));
+export default ShopItemList;

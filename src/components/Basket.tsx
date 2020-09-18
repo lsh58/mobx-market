@@ -7,7 +7,7 @@ const Basket: React.FC  = () => {
   return (
     <BasketTemplate
       basket={<BasketItemList />}
-      total={<TotalPrice total/>}
+      total={<TotalPrice/>}
     />
   );
 };
