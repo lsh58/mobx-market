@@ -41,7 +41,7 @@ const ShopItem = ({ name, price,isInCart, onPut, onToggle } : {name:string, pric
       <Paper elevation={3} className={classes.shopItem}>
         <button className={classes.cart} onClick={() => {
           onPut(name, price);
-          onToggle();
+          onToggle({name,price,isInCart});
           }}>
           {!isInCart ?
           <ShoppingCartIcon></ShoppingCartIcon>:
