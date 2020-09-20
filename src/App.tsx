@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: '100%',
     background: '#fff',
-    padding: '2rem 0',
+    padding: '2rem 0',//zIndex를 넣으면 오류?
   },
   rootNav: {
     width: '70%',
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const classes = useStyles();
   return (
     <BrowserRouter>
-      <Paper elevation={3} className={classes.root}>
+      <Paper elevation={5} className={classes.root}>
         <nav className={classes.rootNav}>
           <NavLink to="/mobx-market-ts" exact className={classes.link}>
             HOME
