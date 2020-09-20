@@ -53,13 +53,12 @@ export default class MarketStore {
   };
 
   @action
-  toggle = (product:ProductItem) => {
-    console.log(product);
-    const itemToChange = this.selectedItems.find(item => item.name === product.name);
-    itemToChange?.isInCart = !itemToChange?.isInCart
-
-
-    생수 === product 
+  toggle = (name:string, price:number, isInCart:boolean) => {
+    const itemToChange = this.selectedItems.find(item => item.name === name);
+    if(itemToChange){
+    itemToChange.isInCart = !itemToChange.isInCart;
+    console.log(itemToChange.isInCart);
+  }
   };
 
   @computed
