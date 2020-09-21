@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { NavLink } from 'react-router-dom';
 import EditItem from './EditItem';
+import { observer } from 'mobx-react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const EditItemList: React.FC = () => {
+const EditItemList: React.FC = observer(() => {
   const classes = useStyles();
   const market = useMarketStore();
 
@@ -78,6 +79,6 @@ const EditItemList: React.FC = () => {
       </ul>
     </div>
   );
-};
+});
 
 export default EditItemList;

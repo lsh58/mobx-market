@@ -17,14 +17,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface ShopItemProps {
   item: CartProductItem;
-  onEdit?: (product: ProductItem) => void;
-}
+  onEdit?: (product: ProductItem, name:string, price:number) => void;
+} 
 
 const EditItem: React.FC<ShopItemProps> = observer(({ item, onEdit = (() => { }) }) => {
   const classes = useStyles();
   const [isChange, setIsChange] = useState(false);
   const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
+  const [priceTxt, setPrice] = useState('');
   const onChangeName = (e:React.ChangeEvent<HTMLInputElement>) => setName(e.target.value); 
   const onChangePrice = (e:React.ChangeEvent<HTMLInputElement>) => setPrice(e.target.value); 
   const editMode = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -35,7 +35,8 @@ const EditItem: React.FC<ShopItemProps> = observer(({ item, onEdit = (() => { })
   };
   const onSubmit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    onEdit(item);
+    const price = parseInt(priceTxt);
+    onEdit(item,name,price);
     setIsChange(false);
     setName('');
     setPrice('');
@@ -54,7 +55,7 @@ const EditItem: React.FC<ShopItemProps> = observer(({ item, onEdit = (() => { })
       ) : (
         <li className={classes.root}>
           <input type="text" autoFocus value={name} onChange={onChangeName}></input>
-          <input type="text" value={price} onChange={onChangePrice}></input>
+          <input type="number" value={priceTxt} onChange={onChangePrice}></input>
           <button type="submit" onClick={onSubmit}>변경완료</button>
         </li>
       )}

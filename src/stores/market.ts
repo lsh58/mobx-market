@@ -82,7 +82,7 @@ export default class MarketStore {
   ];
 
   @action
-  put = (id:number, name: string, price: number, isInCart: boolean, isChange: boolean): void => {
+  put = (id:number, name: string, price: number, isInCart: boolean): void => {
     // 존재하는지 찾고
     const exists = this.selectedItems.find((item) => item.name === name);
     if (!exists) {
@@ -154,10 +154,11 @@ export default class MarketStore {
   };
 
   @action
-  edit = (product: ProductItem) => {
+  edit = (product: ProductItem,name:string,price:number) => {
     const itemToEdit = this.items.find((item) => item.name === product.name);
     if (itemToEdit) {
-      console.log(product);
+      itemToEdit.name = name;
+      itemToEdit.price = price;
     }
   };
 
