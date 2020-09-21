@@ -9,24 +9,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
     margin: '3rem auto',
     '& h2': {
-      margin: '1rem 0',
+      margin: theme.spacing(3, 0),
     },
   },
   nameTag:{
-    display: 'flex',
     width: '100%',
+    display: 'flex',
     margin:'1rem auto',
-    paddingBottom:'1rem',
-    borderBottom:'2px solid #ddd',
-    fontSize:'1rem',
+    paddingBottom: 16,
+    borderBottom:`2px solid ${theme.palette.grey[200]}`,
+    fontSize:15,
     fontWeight:'bold',
-    color: '#999',
+    color: theme.palette.grey[500],
     '& span':{
-      flex:'1',
+      flex:1,
       textAlign:'center',
       '&:nth-of-type(1)':{
-        flex:'2',
-        paddingLeft:'3rem',
+        flex:2,
+        paddingLeft: 50,
         textAlign:'left',
       }
     },

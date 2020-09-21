@@ -11,58 +11,47 @@ const useStyles = makeStyles((theme:Theme) => ({  // style 요소 선언
     width: '100%',
     margin:'1rem auto',
     textAlign:'center',
-    height:'5rem',
-    '& .name': {
-      paddingLeft:'3rem',
-      flex: '2',
-      display:'flex',
-      alignItems:'center',
-      '& div':{
-        width:'8rem',
-        height:'4rem',
-        background:'#eee',
-        marginRight:'30px'
-      }
-    },
-    '& .price': {
-      flex: '1',
+    height: 80,
+    '&>div':{
       display:'flex',
       alignItems:'center',
       justifyContent: 'center',
+      flex: 1,
+    },
+    '& .name': {
+      paddingLeft:50,
+      justifyContent: 'flex-start',
+      flex: 2,
+      fontWeight:'bold',
+      '& span':{
+        width:90,
+        height:60,
+        background: theme.palette.grey[300],
+        marginRight:30
+      }
     },
     '& .count': {
-      flex: '1',
-      display: 'flex',
-      alignItems:'center',
-      justifyContent: 'center',
-      '& svg':{
-        margin:'0 1rem',
+      '& button':{
+        background:'none',
+        border:'none',
+        outlineStyle:'none',
         cursor:'pointer',
-        color:'#aaa'
+        margin: theme.spacing(0, 1),
+        color:theme.palette.grey[500]
       }
     },
-    '& .totalPrice': {
-      flex:'1',
-      display:'flex',
-      alignItems:'center',
-      justifyContent: 'center',
-    },
-    '& .shipment':{
-      flex:'1',
-      display:'flex',
-      alignItems:'center',
-      justifyContent: 'center',
-    },
-    '& .return': {
-      flex:'1',
-      marginLeft: 'auto',
-      color: '#f06595',
-      cursor: 'pointer',
-      display:'flex',
-      alignItems:'center',
-      justifyContent: 'center',
-      '&:hover': {
-        textDecoration: 'underline',
+    '& .select': {
+      flexDirection:'column',
+      justifyContent:'space-between',
+      '& button':{
+        width:'60%',
+        margin:'0 auto',
+        background:'none',
+        border:`2px solid ${theme.palette.grey[800]}`,
+        cursor:'pointer',
+        '&:hover':{
+          background:theme.palette.grey[300],
+        }
       },
     },
   }
@@ -73,25 +62,41 @@ interface BasketItemProps {
   onTake?: (product: ProductItem) => void;
   onIncrease?: (product: ProductItem) => void;
   onDecrease?: (product: ProductItem) => void;
+  onToggle?: (product: ProductItem) => void;
 }
 
-const BasketItem: React.FC<BasketItemProps> = observer(({ item, onTake = (() => { }), onIncrease = (() => { }), onDecrease = (() => { }) }) => {
+const BasketItem: React.FC<BasketItemProps> = observer(({ item, onTake = (() => { }), onIncrease = (() => { }), onDecrease = (() => { }), onToggle = (() => { }) }) => {
   const classes = useStyles();
   const sum = item.count * item.price;
   return (
     <div className={classes.root}>
       <div className="name">
-        <div></div>{item.name}</div>
+        <span></span>{item.name}</div>
       <div className="price">{item.price}원</div>
       <div className="count">
-        <AddBoxIcon onClick={() => onIncrease(item)}></AddBoxIcon>
+        <button onClick={() => onIncrease(item)}>
+          <AddBoxIcon></AddBoxIcon>
+        </button>
           {item.count}
-        <IndeterminateCheckBoxIcon onClick={() => onDecrease(item)}></IndeterminateCheckBoxIcon>
+        <button onClick={() => onDecrease(item)}>
+          <IndeterminateCheckBoxIcon></IndeterminateCheckBoxIcon>
+        </button>
       </div>
       <div className="totalPrice">총 {sum} 원</div>
       <div className="shipment">배송비:무료</div>
-      <div className="return" onClick={() => onTake(item)}>
-        제거
+      <div className="select">
+        <button>
+          상품정보
+        </button>
+        <button>
+          관심상품 등록
+        </button>
+        <button onClick={() =>{
+          onTake(item);
+          onToggle(item);
+          }}>
+          제거하기
+        </button>
       </div>
     </div>
   );

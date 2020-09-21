@@ -100,13 +100,18 @@ export default class MarketStore {
 
   @action
   decrease = (product: ProductItem): void => {
-    const itemToChange = this.selectedItems.find(
+    const itemToDecrease = this.selectedItems.find(
       (item) => item.name === product.name,
     );
-    if (itemToChange) {
+    if (itemToDecrease) {
       //-버튼이 눌리면 수량 1감소
-      itemToChange.count--;
-      if (itemToChange.count === 0) {
+      itemToDecrease.count--;
+      if (itemToDecrease.count === 0) {
+        const itemToChange = this.items.find((item) => item.name === product.name);
+        if (itemToChange) {
+          //toggle
+          itemToChange.isInCart = !itemToChange.isInCart;
+        }
         const itemToTake = this.selectedItems.findIndex(
           (item) => item.name === product.name,
         );
@@ -128,9 +133,8 @@ export default class MarketStore {
   };
 
   @action
-  toggle = (name: string) => {
-    const itemToChange = this.items.find((item) => item.name === name);
-    console.log(itemToChange);
+  toggle = (product: ProductItem) => {
+    const itemToChange = this.items.find((item) => item.name === product.name);
     if (itemToChange) {
       itemToChange.isInCart = !itemToChange.isInCart;
     }

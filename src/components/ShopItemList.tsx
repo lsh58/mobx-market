@@ -11,7 +11,7 @@ const ShopItemList: React.FC = () => {
       <>
         {market.items.map((item: CartProductItem) => (
           <ShopItem
-            {...item}
+            item={item}
             key={item.name}
             onPut={market.put}
             onToggle={market.toggle}

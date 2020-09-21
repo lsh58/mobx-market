@@ -9,8 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   root: {
     width: '100%',
-    background: '#fff',
-    padding: '2rem 0',//zIndex를 넣으면 오류?
+    padding: theme.spacing(4, 0),//zIndex를 넣으면 오류?
   },
   rootNav: {
     width: '70%',
@@ -21,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   link: {
     textDecoration: 'none',
     fontWeight: 'bold',
-    fontSize: '1.2rem',
-    color: '#333',
+    fontSize: 16,
+    color: theme.palette.grey[900],
   },
 }));
 
@@ -30,7 +29,7 @@ const App: React.FC = () => {
   const classes = useStyles();
   return (
     <BrowserRouter>
-      <Paper elevation={5} className={classes.root}>
+      <Paper elevation={3} className={classes.root}>
         <nav className={classes.rootNav}>
           <NavLink to="/mobx-market-ts" exact className={classes.link}>
             HOME

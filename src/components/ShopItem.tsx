@@ -3,33 +3,35 @@ import { makeStyles, Theme } from '@material-ui/core/styles'; // styles 기능 �
 import { Typography, Grid } from '@material-ui/core'; // styles 기능 추가
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
+import { CartProductItem, ProductItem } from '../models';
+import { observer } from 'mobx-react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   shopItem: {
     background: '#eee',
     padding: theme.spacing(2),
-    height: '200px',
+    height: 200,
     position: 'relative',
   },
   cart: {
     position: 'absolute',
-    top: '1rem',
-    right: '1rem',
-    color: '#333',
+    top: 16,
+    right: 16,
+    color: theme.palette.grey[600],
     border: 'none',
-    outline: 'none',
+    outlineStyle:'none',
     cursor: 'pointer',
   },
   textWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    marginTop: '0.5rem',
-    marginBottom: '2rem',
+    marginTop: 8,
+    marginBottom: 32,
     '& h6': {
-      fontSize: '0.9rem',
-      fontWeight: '550',
-      color: '#777',
+      fontSize: 14,
+      fontWeight: 500,
+      color: theme.palette.grey[900],
     },
     '& .price': {
       fontWeight: 'bold',
@@ -37,19 +39,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ShopItem = ({
-  name,
-  price,
-  isInCart,
-  onPut,
-  onToggle,
-}: {
-  name: string;
-  price: number;
-  isInCart: boolean;
-  onPut: (name: string, price: number, isInCartL: boolean) => {};
-  onToggle: (name: string) => {};
-}) => {
+interface ShopItemProps {
+  item: CartProductItem;
+  onPut?: (name: string, price: number, isInCart: boolean) => void;
+  onToggle?: (product: ProductItem) => void;
+}
+
+const ShopItem: React.FC<ShopItemProps> = observer(({ item, onPut = (() => { }), onToggle = (() => { }) }) => {
   const classes = useStyles();
   return (
     <Grid item lg={3} md={4} sm={4} xs={12}>
@@ -57,11 +53,11 @@ const ShopItem = ({
         <button
           className={classes.cart}
           onClick={() => {
-            onPut(name, price, isInCart);
-            onToggle(name);
+            onPut(item.name,item.price,item.isInCart);
+            onToggle(item);
           }}
         >
-          {isInCart === false ? (
+          {item.isInCart === false ? (
             <ShoppingCartIcon></ShoppingCartIcon>
           ) : (
             <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
@@ -69,13 +65,13 @@ const ShopItem = ({
         </button>
       </div>
       <div className={classes.textWrapper}>
-        <Typography variant="h6">{name}</Typography>
+        <Typography variant="h6">{item.name}</Typography>
         <Typography className="price" variant="body1">
-          {price} won
+          {item.price} won
         </Typography>
       </div>
     </Grid>
   );
-};
+});
 
 export default ShopItem;

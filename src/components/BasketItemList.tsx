@@ -16,6 +16,7 @@ const BasketItemList: React.FC = () => {
             onTake={market.take}
             onIncrease={market.increase}
             onDecrease={market.decrease}
+            onToggle={market.toggle}
           />
         ))}
       </div>
