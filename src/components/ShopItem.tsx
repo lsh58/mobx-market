@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles'; // styles 기능 추가
-import { Typography, Grid } from '@material-ui/core'; // styles 기능 추가
+import { Typography, Grid } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
 import { CartProductItem, ProductItem } from '../models';
@@ -9,7 +9,7 @@ import { observer } from 'mobx-react';
 const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   shopItem: {
-    background: '#eee',
+    background: theme.palette.grey[200],
     padding: theme.spacing(2),
     height: 200,
     position: 'relative',
@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textWrapper: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent:'space-between',
     marginTop: 8,
     marginBottom: 32,
     '& h6': {
@@ -37,11 +38,21 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontWeight: 'bold',
     },
   },
+  nameWrapper:{
+    display:'flex',
+    '& input':{
+      width:'100%'
+    },
+    '& button':{
+      background: theme.palette.grey[200],
+      fontWeight:'bold'
+    }
+  }
 }));
 
 interface ShopItemProps {
   item: CartProductItem;
-  onPut?: (name: string, price: number, isInCart: boolean) => void;
+  onPut?: (id:number, name: string, price: number, isInCart: boolean) => void;
   onToggle?: (product: ProductItem) => void;
 }
 
@@ -53,7 +64,7 @@ const ShopItem: React.FC<ShopItemProps> = observer(({ item, onPut = (() => { }),
         <button
           className={classes.cart}
           onClick={() => {
-            onPut(item.name,item.price,item.isInCart);
+            onPut(item.id, item.name,item.price,item.isInCart);
             onToggle(item);
           }}
         >
@@ -65,7 +76,9 @@ const ShopItem: React.FC<ShopItemProps> = observer(({ item, onPut = (() => { }),
         </button>
       </div>
       <div className={classes.textWrapper}>
-        <Typography variant="h6">{item.name}</Typography>
+        <div className={classes.nameWrapper}>
+            <Typography variant="h6">{item.name}</Typography>
+        </div>
         <Typography className="price" variant="body1">
           {item.price} won
         </Typography>

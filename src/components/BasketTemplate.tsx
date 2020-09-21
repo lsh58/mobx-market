@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '70%',
     display: 'flex',
     flexDirection: 'column',
-    margin: '3rem auto',
+    margin: theme.spacing(15, 'auto', 3, 'auto'),
     '& h2': {
       margin: theme.spacing(3, 0),
     },

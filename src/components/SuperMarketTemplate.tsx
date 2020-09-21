@@ -1,12 +1,13 @@
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import { Box, Grid, Button } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: '70%',
-    margin: '3rem auto',
+    margin: theme.spacing(15, 'auto', 3, 'auto'),
   },
   category:{
     width: '50%',
@@ -16,6 +17,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& a':{
       textDecoration:'none',
       color: theme.palette.grey[800],
+      fontWeight:'bold'
+    }
+  },
+  editBtn:{
+    textDecoration:'none',
+    '& button':{
+      margin:theme.spacing(3, 0),
       fontWeight:'bold'
     }
   }
@@ -32,6 +40,15 @@ const SuperMarketTemplate = ({ items }: { items: JSX.Element }) => {
         <a href="/">Featured Product</a>
         <a href="/">Special Product</a>
       </nav>
+      <NavLink to="/Edit" className={classes.editBtn}>
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<EditIcon />}
+        >
+          EDIT
+        </Button>
+      </NavLink>
       <Grid container spacing={2}>
         {items}
       </Grid>

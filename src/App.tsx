@@ -1,6 +1,7 @@
 import React from 'react';
 import SuperMarket from './components/SuperMarket';
 import Basket from './components/Basket';
+import Edit from './components/EditItemList';
 import { BrowserRouter, Route, Switch, NavLink } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles'; // styles 기능 추가
 import { Paper } from '@material-ui/core'; // styles 기능 추가
@@ -9,7 +10,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   root: {
     width: '100%',
-    padding: theme.spacing(4, 0),//zIndex를 넣으면 오류?
+    padding: theme.spacing(4, 0),
+    position:'fixed',
+    top:0,
+    zIndex:1000  
   },
   rootNav: {
     width: '60%',
@@ -60,6 +64,7 @@ const App: React.FC = () => {
         <Route path="/" component={SuperMarket} exact />
         <Route path="/mobx-market-ts" component={SuperMarket} exact />
         <Route path="/Cart" component={Basket} exact />
+        <Route path="/Edit" component={Edit} exact />
       </Switch>
     </BrowserRouter>
   );

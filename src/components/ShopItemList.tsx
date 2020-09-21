@@ -7,18 +7,16 @@ import { CartProductItem } from '../models';
 const ShopItemList: React.FC = () => {
   const market = useMarketStore();
   return useObserver(() =>
-    market.items ? (
       <>
         {market.items.map((item: CartProductItem) => (
           <ShopItem
             item={item}
-            key={item.name}
+            key={item.id}
             onPut={market.put}
             onToggle={market.toggle}
           />
         ))}
       </>
-    ) : null,
   );
 };
 

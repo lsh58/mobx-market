@@ -8,61 +8,73 @@ export default class MarketStore {
 
   @observable items = [
     {
+      id:1,
       name: '생수',
       price: 850,
       isInCart: false,
     },
     {
+      id:2,
       name: '커피',
       price: 900,
       isInCart: false,
     },
     {
+      id:3,
       name: '콜라',
       price: 1500,
       isInCart: false,
     },
     {
+      id:4,
       name: '사이다',
       price: 1000,
       isInCart: false,
     },
     {
+      id:5,
       name: '진라면',
       price: 1200,
       isInCart: false,
     },
     {
+      id:6,
       name: '신라면',
       price: 1300,
       isInCart: false,
     },
     {
+      id:7,
       name: '짜파게티',
       price: 1500,
       isInCart: false,
     },
     {
+      id:8,
       name: '너구리',
       price: 1300,
       isInCart: false,
     },
     {
+      id:9,
       name: '포카칩',
       price: 850,
       isInCart: false,
     },
     {
+      id:10,
       name: '새우깡',
       price: 900,
       isInCart: false,
     },
     {
+      id:11,
       name: '바나나킥',
       price: 1500,
       isInCart: false,
     },
     {
+      id:12,
       name: '프링글스',
       price: 1000,
       isInCart: false,
@@ -70,12 +82,13 @@ export default class MarketStore {
   ];
 
   @action
-  put = (name: string, price: number, isInCart: boolean): void => {
+  put = (id:number, name: string, price: number, isInCart: boolean, isChange: boolean): void => {
     // 존재하는지 찾고
     const exists = this.selectedItems.find((item) => item.name === name);
     if (!exists) {
       // 존재하지 않는다면 새로 집어넣습니다.
       this.selectedItems.push({
+        id,
         name,
         price,
         isInCart,
@@ -137,6 +150,14 @@ export default class MarketStore {
     const itemToChange = this.items.find((item) => item.name === product.name);
     if (itemToChange) {
       itemToChange.isInCart = !itemToChange.isInCart;
+    }
+  };
+
+  @action
+  edit = (product: ProductItem) => {
+    const itemToEdit = this.items.find((item) => item.name === product.name);
+    if (itemToEdit) {
+      console.log(product);
     }
   };
 
