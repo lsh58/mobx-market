@@ -83,12 +83,17 @@ const BasketItem: React.FC<BasketItemProps> = observer(({ item, onTake = (() => 
         </button>
       </div>
       <div className="totalPrice">총 {sum} 원</div>
-      <div className="shipment">배송비:무료</div>
+      <div className="shipment">
+          {/* 임시카테고리 */}
+          배송비:무료
+          </div>
       <div className="select">
         <button>
+          {/* 임시버튼 */}
           상품정보
         </button>
         <button>
+          {/* 임시버튼 */}
           관심상품 등록
         </button>
         <button onClick={() =>{

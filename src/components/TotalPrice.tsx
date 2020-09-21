@@ -21,6 +21,7 @@ const TotalPrice: React.FC =() => {
   return useObserver(()=>(
       <div className={classes.root}>
         <p>
+          {/* 임시계산값 */}
           총 상품금액 {market.total}원 + 배송비 0 원 - 할인금액 0 원  =  총합 {market.total}원
         </p>
       </div>
