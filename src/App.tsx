@@ -12,10 +12,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(4, 0),//zIndex를 넣으면 오류?
   },
   rootNav: {
-    width: '70%',
+    width: '60%',
     margin: '0 auto',
     display: 'flex',
     justifyContent: 'space-between',
+    '& nav':{ 
+      width:'40%',
+      margin:'0 auto',
+      display:'flex',
+      justifyContent:'space-between',
+      '& a':{
+      textDecoration:'none',
+      color: theme.palette.grey[800],
+      fontWeight:'bold'
+      }
+    }
   },
   link: {
     textDecoration: 'none',
@@ -34,6 +45,12 @@ const App: React.FC = () => {
           <NavLink to="/mobx-market-ts" exact className={classes.link}>
             HOME
           </NavLink>
+          <nav>
+            <a href="/">SHOP</a>
+            <a href="/">BLOG</a>
+            <a href="/">MEDIA</a>
+            <a href="/">COMPANY</a>
+          </nav>
           <NavLink to="/Cart" className={classes.link}>
             CART
           </NavLink>
