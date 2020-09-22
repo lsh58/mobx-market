@@ -1,51 +1,47 @@
-import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Box, Grid, Button } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { makeStyles, Theme } from "@material-ui/core/styles";
+import { Box, Grid, Button } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    width: '70%',
-    margin: theme.spacing(15, 'auto', 3, 'auto'),
+    width: "70%",
+    margin: theme.spacing(15, "auto", 3, "auto"),
   },
-  category:{
-    width: '50%',
-    margin:'2rem auto 0',
-    display:'flex',
-    justifyContent:'space-between',
-    '& a':{
-      textDecoration:'none',
+  category: {
+    width: "50%",
+    margin: "2rem auto 0",
+    display: "flex",
+    justifyContent: "space-between",
+    "& a": {
+      textDecoration: "none",
       color: theme.palette.grey[800],
-      fontWeight:'bold'
-    }
+      fontWeight: "bold",
+    },
   },
-  editBtn:{
-    textDecoration:'none',
-    '& button':{
-      margin:theme.spacing(3, 0),
-      fontWeight:'bold'
-    }
-  }
+  editBtn: {
+    textDecoration: "none",
+    "& button": {
+      margin: theme.spacing(3, 0),
+      fontWeight: "bold",
+    },
+  },
 }));
 
 const SuperMarketTemplate = ({ items }: { items: JSX.Element }) => {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
-      <nav className={classes.category}> 
-      {/* 임시카테고리 */}
-        <a href="/">Latest Product</a>
-        <a href="/">Best Product</a>
-        <a href="/">Featured Product</a>
-        <a href="/">Special Product</a>
+      <nav className={classes.category}>
+        {/* 임시카테고리 */}
+        <a href='/'>Latest Product</a>
+        <a href='/'>Best Product</a>
+        <a href='/'>Featured Product</a>
+        <a href='/'>Special Product</a>
       </nav>
-      <NavLink to="/Edit" className={classes.editBtn}>
-        <Button
-          variant="contained"
-          size="small"
-          startIcon={<EditIcon />}
-        >
+      <NavLink to='/Edit' className={classes.editBtn}>
+        <Button variant='contained' size='small' startIcon={<EditIcon />}>
           EDIT
         </Button>
       </NavLink>

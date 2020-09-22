@@ -1,39 +1,39 @@
-import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles'; // styles 기능 추가
+import React from "react";
+import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
 
 const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   root: {
-    width: '70%',
-    display: 'flex',
-    flexDirection: 'column',
-    margin: theme.spacing(15, 'auto', 3, 'auto'),
-    '& h2': {
+    width: "70%",
+    display: "flex",
+    flexDirection: "column",
+    margin: theme.spacing(15, "auto", 3, "auto"),
+    "& h2": {
       margin: theme.spacing(3, 0),
     },
   },
-  nameTag:{
-    width: '100%',
-    display: 'flex',
-    margin:'1rem auto',
+  nameTag: {
+    width: "100%",
+    display: "flex",
+    margin: "1rem auto",
     paddingBottom: 16,
-    borderBottom:`2px solid ${theme.palette.grey[200]}`,
-    fontSize:15,
-    fontWeight:'bold',
+    borderBottom: `2px solid ${theme.palette.grey[200]}`,
+    fontSize: 15,
+    fontWeight: "bold",
     color: theme.palette.grey[500],
-    '& span':{
-      flex:1,
-      textAlign:'center',
-      '&:nth-of-type(1)':{
-        flex:2,
+    "& span": {
+      flex: 1,
+      textAlign: "center",
+      "&:nth-of-type(1)": {
+        flex: 2,
         paddingLeft: 50,
-        textAlign:'left',
-      }
+        textAlign: "left",
+      },
     },
   },
   itemsWrapper: {
-    width: '100%',
-    margin: '0 auto',
+    width: "100%",
+    margin: "0 auto",
   },
 }));
 

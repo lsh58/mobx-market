@@ -1,97 +1,106 @@
-import { observable, action, computed } from 'mobx';
-import { MobXProviderContext } from 'mobx-react';
-import { useContext } from 'react';
-import { ProductItem, CartProductItem } from '../models';
+import { observable, action, computed } from "mobx";
+import { MobXProviderContext } from "mobx-react";
+import { useContext } from "react";
+import { ProductItem, BasketProductItem } from "../models";
 
 export default class MarketStore {
-  @observable selectedItems: CartProductItem[] = [];
+  @observable selectedItems: BasketProductItem[] = [];
 
   @observable items = [
     {
-      id:1,
-      name: '생수',
+      id: 1,
+      name: "생수",
       price: 850,
       isInCart: false,
+      count: 1,
     },
     {
-      id:2,
-      name: '커피',
+      id: 2,
+      name: "커피",
       price: 900,
       isInCart: false,
+      count: 1,
     },
     {
-      id:3,
-      name: '콜라',
+      id: 3,
+      name: "콜라",
       price: 1500,
       isInCart: false,
+      count: 1,
     },
     {
-      id:4,
-      name: '사이다',
+      id: 4,
+      name: "사이다",
       price: 1000,
       isInCart: false,
+      count: 1,
     },
     {
-      id:5,
-      name: '진라면',
+      id: 5,
+      name: "진라면",
       price: 1200,
       isInCart: false,
+      count: 1,
     },
     {
-      id:6,
-      name: '신라면',
+      id: 6,
+      name: "신라면",
       price: 1300,
       isInCart: false,
+      count: 1,
     },
     {
-      id:7,
-      name: '짜파게티',
+      id: 7,
+      name: "짜파게티",
       price: 1500,
       isInCart: false,
+      count: 1,
     },
     {
-      id:8,
-      name: '너구리',
+      id: 8,
+      name: "너구리",
       price: 1300,
       isInCart: false,
+      count: 1,
     },
     {
-      id:9,
-      name: '포카칩',
+      id: 9,
+      name: "포카칩",
       price: 850,
       isInCart: false,
+      count: 1,
     },
     {
-      id:10,
-      name: '새우깡',
+      id: 10,
+      name: "새우깡",
       price: 900,
       isInCart: false,
+      count: 1,
     },
     {
-      id:11,
-      name: '바나나킥',
+      id: 11,
+      name: "바나나킥",
       price: 1500,
       isInCart: false,
+      count: 1,
     },
     {
-      id:12,
-      name: '프링글스',
+      id: 12,
+      name: "프링글스",
       price: 1000,
       isInCart: false,
+      count: 1,
     },
   ];
 
   @action
-  put = (id:number, name: string, price: number, isInCart: boolean): void => {
+  put = (id: number): void => {
     // 존재하는지 찾고
     const exists = this.selectedItems.findIndex((item) => item.id === id);
-    if (exists===-1) {
+    if (exists === -1) {
       // 존재하지 않는다면 새로 집어넣습니다.
       this.selectedItems.push({
         id,
-        name,
-        price,
-        isInCart,
         count: 1,
       });
       return;
@@ -103,15 +112,20 @@ export default class MarketStore {
   @action
   take = (product: ProductItem): void => {
     const itemToTake = this.selectedItems.findIndex(
-      (item) => item.id === product.id,
+      (item) => item.id === product.id
     );
     this.selectedItems.splice(itemToTake, 1); // 배열에서 제거처리합니다.
+    const itemToChange = this.items.find((item) => item.id === product.id);
+    if (itemToChange) {
+      //toggle
+      itemToChange.isInCart = !itemToChange.isInCart;
+    }
   };
 
   @action
   decrease = (product: ProductItem): void => {
     const itemToDecrease = this.selectedItems.find(
-      (item) => item.id === product.id,
+      (item) => item.id === product.id
     );
     if (itemToDecrease) {
       //-버튼이 눌리면 수량 1감소
@@ -124,7 +138,7 @@ export default class MarketStore {
           itemToChange.isInCart = !itemToChange.isInCart;
         }
         const itemToTake = this.selectedItems.findIndex(
-          (item) => item.id === product.id,
+          (item) => item.id === product.id
         );
         this.selectedItems.splice(itemToTake, 1); // 배열에서 제거처리합니다.
       }
@@ -143,32 +157,37 @@ export default class MarketStore {
   };
 
   @action
-  toggle = (product: ProductItem) => {
-    const itemToChange = this.items.find((item) => item.id === product.id);
+  toggle = (id: number) => {
+    const itemToChange = this.items.find((item) => item.id === id);
     if (itemToChange) {
+      //장바구니icon toggle
       itemToChange.isInCart = !itemToChange.isInCart;
     }
   };
 
   @action
-  edit = (product: ProductItem,name:string,price:number) => {
+  edit = (product: ProductItem, name: string, price: number) => {
     const itemToEdit = this.items.find((item) => item.id === product.id);
     if (itemToEdit) {
+      //변경된 이름으로 변경
       itemToEdit.name = name;
       itemToEdit.price = price;
-    }
-    const selectedItemToEdit = this.selectedItems.find((item) => item.id === product.id);
-    if(selectedItemToEdit){
-      selectedItemToEdit.name = name;
-      selectedItemToEdit.price = price;
     }
   };
 
   @computed
   get total(): number {
-    return this.selectedItems.reduce((previous, current) => {
-      return previous + current.price * current.count;
-    }, 0);
+    let selectedArr = this.items.filter((item) => {
+      //선택된 제품들 배열에 저장
+      return this.selectedItems.find(
+        (selectedItem) => selectedItem.id === item.id
+      );
+    });
+    return this.selectedItems.reduce(
+      //총합 계산
+      (acc, selectedItem, i) => acc + selectedArr[i].price * selectedItem.count,
+      0
+    );;
   }
 }
 
