@@ -12,35 +12,37 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: '70%',
     margin:theme.spacing(3,'auto'),
-    marginTop: 170,
+    marginTop: 143,
     '& ul li':{
       listStyle:'none',
       display:'flex',
-      padding:theme.spacing(1.5,0),
-      border:'1px solid #eee',
+      height:50,
+      border:'2px solid #eee',
+      alignItems:'center',
       borderBottom:'none',
       fontWeight:'bold',
       '&:first-of-type':{
-        background:theme.palette.grey[300],
+        border:'none',
+        background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+        color:'white',
       },
       '&:nth-child(n+2):hover':{
         background:theme.palette.grey[200],
       },
       '&:last-of-type':{
-        borderBottom:'1px solid #eee',
+        borderBottom:'2px solid #eee',
       },
       '& span':{
-        flex:2,
+        flex:3,
         textAlign:'center',
       },
-      '& div':{
-        flex:1,
-        textAlign:'center',
-        '& button':{
-          fontWeight:'bold',
-          background:theme.palette.grey[300],
-        }
-      }
+    }
+  },
+  btnSpace:{
+    flex:1,
+    textAlign:'center',
+    '& button':{
+      fontWeight:'bold',
     }
   },
   homeBtn:{
@@ -69,9 +71,9 @@ const EditItemList: React.FC = observer(() => {
       </NavLink>
       <ul>
         <li>
-          <span>productName</span>
-          <span>price</span>
-          <div></div>
+          <span>상품정보</span>
+          <span>가격</span>
+          <div className={classes.btnSpace}></div>
         </li>
         {market.items.map((item: CartProductItem) => (
           <EditItem item={item} key={item.id} onEdit={market.edit} />

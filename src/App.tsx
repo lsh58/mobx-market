@@ -62,9 +62,9 @@ const App: React.FC = () => {
       </Paper>
       <Switch>
         <Route path="/" component={SuperMarket} exact />
-        <Route path="/mobx-market-ts" component={SuperMarket} exact />
-        <Route path="/Cart" component={Basket} exact />
-        <Route path="/Edit" component={Edit} exact />
+        <Route path="/mobx-market-ts" component={SuperMarket} />
+        <Route path="/Cart" component={Basket} />
+        <Route path="/Edit" component={Edit} />
       </Switch>
     </BrowserRouter>
   );

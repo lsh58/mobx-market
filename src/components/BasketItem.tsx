@@ -7,6 +7,7 @@ import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox'
 
 const useStyles = makeStyles((theme:Theme) => ({  // style 요소 선언
   root: {
+    listStyle:'none',
     display: 'flex',
     width: '100%',
     margin:'1rem auto',
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme:Theme) => ({  // style 요소 선언
       flex: 1,
     },
     '& .name': {
-      paddingLeft:50,
+      paddingLeft:10,
       justifyContent: 'flex-start',
       flex: 2,
       fontWeight:'bold',
@@ -69,7 +70,7 @@ const BasketItem: React.FC<BasketItemProps> = observer(({ item, onTake = (() => 
   const classes = useStyles();
   const sum = item.count * item.price;
   return (
-    <div className={classes.root}>
+    <li className={classes.root}>
       <div className="name">
         <span></span>{item.name}</div>
       <div className="price">{item.price}원</div>
@@ -103,7 +104,7 @@ const BasketItem: React.FC<BasketItemProps> = observer(({ item, onTake = (() => 
           제거하기
         </button>
       </div>
-    </div>
+    </li>
   );
 });
 

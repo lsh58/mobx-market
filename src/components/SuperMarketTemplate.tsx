@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   category:{
     width: '50%',
-    margin:'2rem auto',
+    margin:'2rem auto 0',
     display:'flex',
     justifyContent:'space-between',
     '& a':{

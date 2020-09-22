@@ -2,16 +2,49 @@ import React, {useState} from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles'; // styles 기능 추가
 import { CartProductItem, ProductItem } from '../models';
 import { observer } from 'mobx-react';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display:'flex',
     justifyContent:'center',
-    background:theme.palette.grey[200],
+  },
+  inputWrapper:{
+    flex:3,
+    display:'flex',
+    justifyContent:'center',
     '& input':{
-      width:'20%',
-      margin:'0 8rem',
+      outlineStyle:'none',
+      width:'50%',
+      height:25
+    },
+  },
+  btnWrapper:{
+    flex:1,
+    display:'flex',
+    justifyContent:'center',
+    '& button:nth-of-type(1)':{
+      marginRight:'0.5rem'
+    },
+    '& button:nth-of-type(2)':{
+      marginLeft:'0.5rem'
     }
+  },
+  editBtn:{
+    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 30,
+    padding: theme.spacing(0,1),
+  },
+  cancelBtn:{
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 30,
+    padding: theme.spacing(0,1),
   }
 }));
 
@@ -48,15 +81,28 @@ const EditItem: React.FC<ShopItemProps> = observer(({ item, onEdit = (() => { })
         <li>
           <span>{item.name}</span>
           <span>{item.price}</span>
-          <div>
-            <button onClick={editMode}>edit</button>
+          <div className={classes.btnWrapper}>
+            <Button size="small" onClick={editMode} className={classes.editBtn}>
+              EDIT
+            </Button>
           </div>
         </li>
       ) : (
         <li className={classes.root}>
-          <input type="text" autoFocus value={name} onChange={onChangeName}></input>
-          <input type="number" value={priceTxt} onChange={onChangePrice}></input>
-          <button type="submit" onClick={onSubmit}>변경완료</button>
+          <div className={classes.inputWrapper}>
+            <input type="text" autoFocus value={name} onChange={onChangeName}></input>
+          </div>
+          <div className={classes.inputWrapper}>
+            <input type="number" step="10" value={priceTxt} onChange={onChangePrice}></input>
+          </div>
+          <div className={classes.btnWrapper}>
+            <Button size="small" onClick={onSubmit} className={classes.editBtn}>
+              변경
+            </Button>
+            <Button size="small" onClick={onSubmit} className={classes.cancelBtn}>
+              취소
+            </Button>
+          </div>
         </li>
       )}
   </>

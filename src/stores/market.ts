@@ -84,8 +84,8 @@ export default class MarketStore {
   @action
   put = (id:number, name: string, price: number, isInCart: boolean): void => {
     // 존재하는지 찾고
-    const exists = this.selectedItems.find((item) => item.name === name);
-    if (!exists) {
+    const exists = this.selectedItems.findIndex((item) => item.id === id);
+    if (exists===-1) {
       // 존재하지 않는다면 새로 집어넣습니다.
       this.selectedItems.push({
         id,
@@ -96,17 +96,14 @@ export default class MarketStore {
       });
       return;
     } else {
-      const itemToTake = this.selectedItems.findIndex(
-        (item) => item.name === name,
-      );
-      this.selectedItems.splice(itemToTake, 1); // 배열에서 제거처리합니다.
+      this.selectedItems.splice(exists, 1); // 배열에서 제거처리합니다.
     }
   };
 
   @action
   take = (product: ProductItem): void => {
     const itemToTake = this.selectedItems.findIndex(
-      (item) => item.name === product.name,
+      (item) => item.id === product.id,
     );
     this.selectedItems.splice(itemToTake, 1); // 배열에서 제거처리합니다.
   };
@@ -114,21 +111,21 @@ export default class MarketStore {
   @action
   decrease = (product: ProductItem): void => {
     const itemToDecrease = this.selectedItems.find(
-      (item) => item.name === product.name,
+      (item) => item.id === product.id,
     );
     if (itemToDecrease) {
       //-버튼이 눌리면 수량 1감소
       itemToDecrease.count--;
       if (itemToDecrease.count === 0) {
-        const itemToChange = this.items.find((item) => item.name === product.name);
+        // 갯수가 0 이면
+        const itemToChange = this.items.find((item) => item.id === product.id);
         if (itemToChange) {
           //toggle
           itemToChange.isInCart = !itemToChange.isInCart;
         }
         const itemToTake = this.selectedItems.findIndex(
-          (item) => item.name === product.name,
+          (item) => item.id === product.id,
         );
-        // 갯수가 0 이면
         this.selectedItems.splice(itemToTake, 1); // 배열에서 제거처리합니다.
       }
     }
@@ -137,7 +134,7 @@ export default class MarketStore {
   @action
   increase = (product: ProductItem): void => {
     const itemToChange = this.selectedItems.find(
-      (item) => item.name === product.name,
+      (item) => item.id === product.id
     );
     if (itemToChange) {
       //+버튼이 눌리면 수량 1증가
@@ -147,7 +144,7 @@ export default class MarketStore {
 
   @action
   toggle = (product: ProductItem) => {
-    const itemToChange = this.items.find((item) => item.name === product.name);
+    const itemToChange = this.items.find((item) => item.id === product.id);
     if (itemToChange) {
       itemToChange.isInCart = !itemToChange.isInCart;
     }
@@ -155,10 +152,15 @@ export default class MarketStore {
 
   @action
   edit = (product: ProductItem,name:string,price:number) => {
-    const itemToEdit = this.items.find((item) => item.name === product.name);
+    const itemToEdit = this.items.find((item) => item.id === product.id);
     if (itemToEdit) {
       itemToEdit.name = name;
       itemToEdit.price = price;
+    }
+    const selectedItemToEdit = this.selectedItems.find((item) => item.id === product.id);
+    if(selectedItemToEdit){
+      selectedItemToEdit.name = name;
+      selectedItemToEdit.price = price;
     }
   };
 

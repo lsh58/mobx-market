@@ -7,20 +7,18 @@ import { CartProductItem } from '../models';
 const BasketItemList: React.FC = () => {
   const market = useMarketStore();
   return useObserver(() =>
-    market.selectedItems ? (
-      <div>
-        {market.selectedItems.map((item: CartProductItem) => (
-          <BasketItem
-            item={item}
-            key={item.name}
-            onTake={market.take}
-            onIncrease={market.increase}
-            onDecrease={market.decrease}
-            onToggle={market.toggle}
-          />
-        ))}
-      </div>
-    ) : null,
+    <ul>
+      {market.selectedItems.map((item: CartProductItem) => (
+        <BasketItem
+          item={item}
+          key={item.name}
+          onTake={market.take}
+          onIncrease={market.increase}
+          onDecrease={market.decrease}
+          onToggle={market.toggle}
+        />
+      ))}
+    </ul>
   );
 };
 
