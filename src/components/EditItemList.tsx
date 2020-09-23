@@ -1,13 +1,12 @@
 import React from "react";
 import { useMarketStore } from "../stores/market";
-import { ProductItem } from "../models";
 import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
-import { Button, Typography } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
+import { ProductItem } from "../models";
+import { Button, Typography, Modal, TextField } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import EditItem from "./EditItem";
 import { observer } from "mobx-react";
-import Modal from "@material-ui/core/Modal";
+import EditIcon from "@material-ui/icons/Edit";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -85,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   modalWrapper: {
     position: "absolute",
     width: 1000,
-    height: 100,
+    height: 150,
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],
@@ -96,14 +95,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    "& h4": {
-      fontWeight: "bold",
-      marginRight: "2rem",
-    },
     "& input": {
       fontWeight: "bold",
       marginRight: "1rem",
-      height: 30,
+      height: 50,
       padding: "0 1rem",
     },
     "& button": {
@@ -126,19 +121,13 @@ const EditItemList: React.FC = observer(() => {
     setOpen(false);
   };
   const body = (
-    <div className={classes.modalWrapper}>
-      <Typography variant='h4' component='h4'>
-        상품명
-      </Typography>
-      <input type='text' placeholder='상품명을 입력해주세요' autoFocus></input>
-      <Typography variant='h4' component='h4'>
-        가격
-      </Typography>
-      <input type='text' placeholder='가격을 입력해주세요'></input>
+    <form className={classes.modalWrapper} noValidate autoComplete="off">
+      <TextField label="상품명" variant="outlined" className={classes.modalWrapper} />
+      <TextField label="가격" variant="outlined" />
       <Button variant='contained' color='primary'>
         상품등록
       </Button>
-    </div>
+    </form>
   );
   return (
     <div className={classes.root}>

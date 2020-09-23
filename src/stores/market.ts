@@ -175,6 +175,15 @@ export default class MarketStore {
     }
   };
 
+  @action
+  remove = (product:ProductItem)=>{
+    const itemToRemove = this.items.findIndex((item)=> item.id === product.id);
+    console.log(itemToRemove)
+    if(itemToRemove){
+      this.items.splice(itemToRemove, 1); // 배열에서 제거처리합니다.
+    }
+  }
+
   @computed
   get total(): number {
     let selectedArr = this.items.filter((item) => {

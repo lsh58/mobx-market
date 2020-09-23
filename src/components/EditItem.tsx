@@ -5,6 +5,7 @@ import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
 import { useLocalStore } from "mobx-react"; // 6.x
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
+import { useMarketStore } from "../stores/market";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   removeBtn:{
     color: theme.palette.secondary.main,
+    cursor:'pointer',
   },
   editBtn: {
     background: theme.palette.primary.main,
@@ -73,11 +75,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface ShopItemProps {
   item: ProductItem;
   onEdit?: (product: ProductItem, name: string, price: number) => void;
+  onRemove?: (product: ProductItem) => void;
 }
 
 const EditItem: React.FC<ShopItemProps> = observer(
-  ({ item, onEdit = () => {} }) => {
+  ({ item, onEdit = () => {}, onRemove = () => {} }) => {
     const classes = useStyles();
+    const market = useMarketStore();
 
     const edit = useLocalStore(() => ({
       isChange: false,
@@ -133,7 +137,7 @@ const EditItem: React.FC<ShopItemProps> = observer(
         ) : (
           <li className={classes.root}>
             <div className={classes.btnWrapper}>
-              <RemoveCircleOutlineIcon className={classes.removeBtn} />
+              <RemoveCircleOutlineIcon className={classes.removeBtn} onClick={market.onRemove(item)} />
             </div>
             <div className={classes.inputWrapper}>
               <input
