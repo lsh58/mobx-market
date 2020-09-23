@@ -4,6 +4,7 @@ import { ProductItem } from "../models";
 import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
 import { useLocalStore } from "mobx-react"; // 6.x
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "center",
   },
   inputWrapper: {
-    flex: 3,
+    flex: 5,
     display: "flex",
     justifyContent: "center",
     "& input": {
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       textAlign: "center",
       background: "none",
       outlineStyle: "none",
-      width: "30%",
+      width: "50%",
       height: 25,
     },
   },
@@ -28,14 +29,23 @@ const useStyles = makeStyles((theme: Theme) => ({
     flex: 1,
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  selectBtnWrapper: {
+    flex: 3,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     "& button:nth-of-type(1)": {
       marginRight: "0.5rem",
     },
     "& button:nth-of-type(2)": {
       marginLeft: "0.5rem",
-    }, //값이 추가될경우를 고려
+    }, //값이 추가될경우를 고려할것
   },
-
+  removeBtn:{
+    color: theme.palette.secondary.main,
+  },
   editBtn: {
     background: theme.palette.primary.main,
     borderRadius: 3,
@@ -43,6 +53,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: "white",
     height: 30,
     padding: theme.spacing(0, 1),
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
   },
   cancelBtn: {
     background: theme.palette.secondary.light,
@@ -51,6 +64,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: "white",
     height: 30,
     padding: theme.spacing(0, 1),
+    "&:hover": {
+      background: theme.palette.secondary.light,
+    },
   },
 }));
 
@@ -99,9 +115,12 @@ const EditItem: React.FC<ShopItemProps> = observer(
       get mode() {
         return !edit.isChange ? (
           <li>
+            <div className={classes.btnWrapper}>
+              <RemoveCircleOutlineIcon className={classes.removeBtn} />
+            </div>
             <span>{item.name}</span>
             <span>{item.price}</span>
-            <div className={classes.btnWrapper}>
+            <div className={classes.selectBtnWrapper}>
               <Button
                 size='small'
                 onClick={edit.editMode}
@@ -113,6 +132,9 @@ const EditItem: React.FC<ShopItemProps> = observer(
           </li>
         ) : (
           <li className={classes.root}>
+            <div className={classes.btnWrapper}>
+              <RemoveCircleOutlineIcon className={classes.removeBtn} />
+            </div>
             <div className={classes.inputWrapper}>
               <input
                 type='text'
@@ -129,7 +151,7 @@ const EditItem: React.FC<ShopItemProps> = observer(
                 onChange={edit.onChangePrice}
               ></input>
             </div>
-            <div className={classes.btnWrapper}>
+            <div className={classes.selectBtnWrapper}>
               <Button
                 size='small'
                 onClick={edit.onSubmit}

@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(4, 0),
     position:'fixed',
     top:0,
-    zIndex:1000  
+    zIndex:1000 ,
+    background:'#fcfcfc', 
   },
   rootNav: {
     width: '60%',

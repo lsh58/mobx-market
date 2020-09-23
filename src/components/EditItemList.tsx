@@ -2,14 +2,17 @@ import React from "react";
 import { useMarketStore } from "../stores/market";
 import { ProductItem } from "../models";
 import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { NavLink } from "react-router-dom";
 import EditItem from "./EditItem";
 import { observer } from "mobx-react";
+import Modal from "@material-ui/core/Modal";
+import ImportExportIcon from "@material-ui/icons/ImportExport";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    position: "relative",
     width: "70%",
     margin: theme.spacing(3, "auto"),
     marginTop: 143,
@@ -19,6 +22,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     border: "none",
     background: theme.palette.primary.dark,
     color: "white",
+  },
+  btnWrapper: {
+    width: "100%",
+    margin: "0 auto",
+    display: "flex",
+    justifyContent: "flex-end",
+    "& button": {
+      color: "white",
+    },
   },
   editList: {
     "& li": {
@@ -36,17 +48,32 @@ const useStyles = makeStyles((theme: Theme) => ({
         borderBottom: "2px solid #eee",
       },
       "& span": {
-        flex: 3,
+        flex: 5,
         textAlign: "center",
+      },
+    },
+  },
+  index: {
+    flex: 5,
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& button": {
+      border: "none",
+      outlineStyle: "none",
+      background: "none",
+      cursor:'pointer',
+      "& svg": {
+        fill: "white",
       },
     },
   },
   btnSpace: {
     flex: 1,
-    textAlign: "center",
-    "& button": {
-      fontWeight: "bold",
-    },
+  },
+  btnSpace2: {
+    flex: 3,
   },
   homeBtn: {
     textDecoration: "none",
@@ -55,12 +82,64 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontWeight: "bold",
     },
   },
+  modalWrapper: {
+    position: "absolute",
+    width: 1000,
+    height: 100,
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: "5px",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    top: "50%",
+    left: "50%,",
+    transform: `translate(50%, -50%)`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& h4": {
+      fontWeight: "bold",
+      marginRight: "2rem",
+    },
+    "& input": {
+      fontWeight: "bold",
+      marginRight: "1rem",
+      height: 30,
+      padding: "0 1rem",
+    },
+    "& button": {
+      fontWeight: "bold",
+      marginLeft: "5rem",
+      color: "white",
+    },
+  },
 }));
 
 const EditItemList: React.FC = observer(() => {
   const classes = useStyles();
   const market = useMarketStore();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const body = (
+    <div className={classes.modalWrapper}>
+      <Typography variant='h4' component='h4'>
+        상품명
+      </Typography>
+      <input type='text' placeholder='상품명을 입력해주세요' autoFocus></input>
+      <Typography variant='h4' component='h4'>
+        가격
+      </Typography>
+      <input type='text' placeholder='가격을 입력해주세요'></input>
+      <Button variant='contained' color='primary'>
+        상품등록
+      </Button>
+    </div>
+  );
   return (
     <div className={classes.root}>
       <NavLink to='/' className={classes.homeBtn}>
@@ -68,11 +147,39 @@ const EditItemList: React.FC = observer(() => {
           HOME
         </Button>
       </NavLink>
+      <div className={classes.btnWrapper}>
+        <Button variant='contained' color='primary' onClick={handleOpen}>
+          상품추가
+        </Button>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='simple-modal-title'
+          aria-describedby='simple-modal-description'
+        >
+          {body}
+        </Modal>
+      </div>
       <ul className={classes.editList}>
         <li className={classes.indexTab}>
-          <span>상품정보</span>
-          <span>가격</span>
           <div className={classes.btnSpace}></div>
+          <span className={classes.index}>
+            <Typography variant='h4' component='h4'>
+              상품명
+            </Typography>
+            <button>
+              <ImportExportIcon />
+            </button>
+          </span>
+          <span className={classes.index}>
+            <Typography variant='h4' component='h4'>
+              가격
+            </Typography>
+            <button>
+              <ImportExportIcon />
+            </button>
+          </span>
+          <div className={classes.btnSpace2}></div>
         </li>
         {market.items.map((item: ProductItem) => (
           <EditItem item={item} key={item.id} onEdit={market.edit} />
