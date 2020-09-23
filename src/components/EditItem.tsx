@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
 import { ProductItem } from "../models";
 import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
+import { useLocalStore } from "mobx-react"; // 6.x
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -14,10 +15,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "center",
     "& input": {
-      border:'none',
-      borderBottom:'1px solid #333',
-      textAlign:'center',
-      background:'none',
+      border: "none",
+      borderBottom: "1px solid #333",
+      textAlign: "center",
+      background: "none",
       outlineStyle: "none",
       width: "30%",
       height: 25,
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     "& button:nth-of-type(2)": {
       marginLeft: "0.5rem",
-    },//값이 추가될경우를 고려
+    }, //값이 추가될경우를 고려
   },
 
   editBtn: {
@@ -61,44 +62,49 @@ interface ShopItemProps {
 const EditItem: React.FC<ShopItemProps> = observer(
   ({ item, onEdit = () => {} }) => {
     const classes = useStyles();
-    const [isChange, setIsChange] = useState(false);
-    const [name, setName] = useState("");
-    const [priceTxt, setPrice] = useState("");
-    const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) =>
-      setName(e.target.value);
-    const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) =>
-      setPrice(e.target.value);
-    const editMode = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      setIsChange(true);
-      setName(item.name);
-      setPrice(`${item.price}`);
-    };
-    const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      const price = parseInt(priceTxt);
-      onEdit(item, name, price);
-      setIsChange(false);
-      setName("");
-      setPrice("");
-    };
-    const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      setIsChange(false);
-      setName("");
-      setPrice("");
-    }
 
-    return (
-      <>
-        {isChange === false ? (
+    const edit = useLocalStore(() => ({
+      isChange: false,
+      name: "",
+      priceTxt: "",
+      toggle() {
+        edit.isChange = !edit.isChange;
+      },
+      onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
+        edit.name = e.target.value;
+      },
+      onChangePrice(e: React.ChangeEvent<HTMLInputElement>) {
+        edit.priceTxt = e.target.value;
+      },
+      editMode(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
+        edit.isChange = true;
+        edit.name = item.name;
+        edit.priceTxt = `${item.price}`;
+      },
+      onSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
+        const price = parseInt(edit.priceTxt);
+        onEdit(item, edit.name, price);
+        edit.isChange = false;
+        edit.name = "";
+        edit.priceTxt = "";
+      },
+      onCancel(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
+        edit.isChange = false;
+        edit.name = "";
+        edit.priceTxt = "";
+      },
+      get mode() {
+        return !edit.isChange ? (
           <li>
             <span>{item.name}</span>
             <span>{item.price}</span>
             <div className={classes.btnWrapper}>
               <Button
                 size='small'
-                onClick={editMode}
+                onClick={edit.editMode}
                 className={classes.editBtn}
               >
                 EDIT
@@ -111,38 +117,40 @@ const EditItem: React.FC<ShopItemProps> = observer(
               <input
                 type='text'
                 autoFocus
-                value={name}
-                onChange={onChangeName}
+                value={edit.name}
+                onChange={edit.onChangeName}
               ></input>
             </div>
             <div className={classes.inputWrapper}>
               <input
                 type='number'
                 step='10'
-                value={priceTxt}
-                onChange={onChangePrice}
+                value={edit.priceTxt}
+                onChange={edit.onChangePrice}
               ></input>
             </div>
             <div className={classes.btnWrapper}>
               <Button
                 size='small'
-                onClick={onSubmit}
+                onClick={edit.onSubmit}
                 className={classes.editBtn}
               >
                 변경
               </Button>
               <Button
                 size='small'
-                onClick={onCancel}
+                onClick={edit.onCancel}
                 className={classes.cancelBtn}
               >
                 취소
               </Button>
             </div>
           </li>
-        )}
-      </>
-    );
+        );
+      },
+    }));
+
+    return <>{edit.mode}</>;
   }
 );
 
