@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
-import { Typography, Grid } from "@material-ui/core";
+import { Typography, Grid, IconButton } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
 import { ProductItem } from "../models";
@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   shopItem: {
-    background: theme.palette.grey[200],
+    background: theme.palette.primary.light,
     padding: theme.spacing(2),
     height: 200,
     position: "relative",
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: "absolute",
     top: 16,
     right: 16,
-    color: theme.palette.grey[600],
+    color: theme.palette.primary.dark,
     border: "none",
     outlineStyle: "none",
     cursor: "pointer",
@@ -32,19 +32,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     "& h6": {
       fontSize: 14,
       fontWeight: 500,
-      color: theme.palette.grey[900],
+      color: theme.palette.primary.dark,
     },
     "& .price": {
-      fontWeight: "bold",
-    },
-  },
-  nameWrapper: {
-    display: "flex",
-    "& input": {
-      width: "100%",
-    },
-    "& button": {
-      background: theme.palette.grey[200],
       fontWeight: "bold",
     },
   },
@@ -62,7 +52,8 @@ const ShopItem: React.FC<ShopItemProps> = observer(
     return (
       <Grid item lg={3} md={4} sm={4} xs={12}>
         <div className={classes.shopItem}>
-          <button
+          <IconButton
+            size="small"
             className={classes.cart}
             onClick={() => {
               onPut(item.id);
@@ -70,14 +61,14 @@ const ShopItem: React.FC<ShopItemProps> = observer(
             }}
           >
             {item.isInCart === false ? (
-              <ShoppingCartIcon></ShoppingCartIcon>
+              <ShoppingCartIcon color="primary"></ShoppingCartIcon>
             ) : (
-              <RemoveShoppingCartIcon></RemoveShoppingCartIcon>
+              <RemoveShoppingCartIcon color="secondary"></RemoveShoppingCartIcon>
             )}
-          </button>
+          </IconButton>
         </div>
         <div className={classes.textWrapper}>
-          <div className={classes.nameWrapper}>
+          <div>
             <Typography variant='h6'>{item.name}</Typography>
           </div>
           <Typography className='price' variant='body1'>

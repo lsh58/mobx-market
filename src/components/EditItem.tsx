@@ -14,8 +14,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "center",
     "& input": {
+      border:'none',
+      borderBottom:'1px solid #333',
+      textAlign:'center',
+      background:'none',
       outlineStyle: "none",
-      width: "50%",
+      width: "30%",
       height: 25,
     },
   },
@@ -28,10 +32,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     "& button:nth-of-type(2)": {
       marginLeft: "0.5rem",
-    },
+    },//값이 추가될경우를 고려
   },
+
   editBtn: {
-    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    background: theme.palette.primary.main,
     borderRadius: 3,
     border: 0,
     color: "white",
@@ -39,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(0, 1),
   },
   cancelBtn: {
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    background: theme.palette.secondary.light,
     borderRadius: 3,
     border: 0,
     color: "white",
@@ -77,6 +82,12 @@ const EditItem: React.FC<ShopItemProps> = observer(
       setName("");
       setPrice("");
     };
+    const onCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      setIsChange(false);
+      setName("");
+      setPrice("");
+    }
 
     return (
       <>
@@ -122,7 +133,7 @@ const EditItem: React.FC<ShopItemProps> = observer(
               </Button>
               <Button
                 size='small'
-                onClick={onSubmit}
+                onClick={onCancel}
                 className={classes.cancelBtn}
               >
                 취소

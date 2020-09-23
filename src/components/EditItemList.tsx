@@ -13,7 +13,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "70%",
     margin: theme.spacing(3, "auto"),
     marginTop: 143,
-    "& ul li": {
+  },
+  indexTab: {
+    ...theme.typography.h6,
+    border: "none",
+    background: theme.palette.primary.dark,
+    color: "white",
+  },
+  editList: {
+    "& li": {
       listStyle: "none",
       display: "flex",
       height: 50,
@@ -21,13 +29,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       alignItems: "center",
       borderBottom: "none",
       fontWeight: "bold",
-      "&:first-of-type": {
-        border: "none",
-        background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-        color: "white",
-      },
       "&:nth-child(n+2):hover": {
-        background: theme.palette.grey[200],
+        background: theme.palette.primary.light,
       },
       "&:last-of-type": {
         borderBottom: "2px solid #eee",
@@ -65,8 +68,8 @@ const EditItemList: React.FC = observer(() => {
           HOME
         </Button>
       </NavLink>
-      <ul>
-        <li>
+      <ul className={classes.editList}>
+        <li className={classes.indexTab}>
           <span>상품정보</span>
           <span>가격</span>
           <div className={classes.btnSpace}></div>

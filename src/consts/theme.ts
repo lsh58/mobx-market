@@ -6,10 +6,10 @@ import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 
 const themeOptions: ThemeOptions = {
   palette: {
-    primary: colors.blue,
+    primary: colors.grey,
     secondary: colors.pink,
     background: {
-      default: colors.grey[200]
+      default: colors.grey[50],
     }
   },
   typography: {

@@ -12,15 +12,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: theme.spacing(3, 0),
     },
   },
-  nameTag: {
+  indexTab: {
     width: "100%",
     display: "flex",
     margin: "1rem auto",
     paddingBottom: 16,
-    borderBottom: `2px solid ${theme.palette.grey[200]}`,
+    borderBottom: `2px solid ${theme.palette.primary.light}`,
     fontSize: 15,
     fontWeight: "bold",
-    color: theme.palette.grey[500],
+    color: theme.palette.primary.dark,
     "& span": {
       flex: 1,
       textAlign: "center",
@@ -48,7 +48,7 @@ const BasketTemplate = ({
   return (
     <div className={classes.root}>
       <h2>CART</h2>
-      <div className={classes.nameTag}>
+      <div className={classes.indexTab}>
         <span>상품정보</span>
         <span>판매금액</span>
         <span>수량</span>

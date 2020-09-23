@@ -5,12 +5,14 @@ import App from './App';
 import MarketStore from './stores/market';
 import { ThemeProvider } from "@material-ui/styles";
 import theme from './consts/theme';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const market = new MarketStore();
 
 ReactDOM.render(
   <Provider market={market}>
     <ThemeProvider theme={theme}>
+      <CssBaseline/>
       <App />
     </ThemeProvider>
   </Provider>,

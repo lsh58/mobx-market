@@ -11,12 +11,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   category: {
     width: "50%",
-    margin: "2rem auto 0",
+    margin: theme.spacing(0,'auto'),
     display: "flex",
     justifyContent: "space-between",
     "& a": {
       textDecoration: "none",
-      color: theme.palette.grey[800],
+      color: theme.palette.primary.dark,
       fontWeight: "bold",
     },
   },

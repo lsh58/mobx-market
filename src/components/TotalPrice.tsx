@@ -6,13 +6,17 @@ import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 �
 const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   root: {
+    ...theme.typography.h6,
     width: "100%",
     height: 200,
-    margin: "2rem auto",
-    background: theme.palette.grey[100],
+    margin: theme.spacing(2, "auto"),
+    background: theme.palette.primary.light,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    "& b": {
+      fontWeight: "bold",
+    },
   },
 }));
 
@@ -22,8 +26,8 @@ const TotalPrice: React.FC = () => {
   return useObserver(() => (
     <div className={classes.root}>
       <p>
-        {/* 임시계산값 */}총 상품금액 {market.total}원 + 배송비 0 원 - 할인금액
-        0 원 = 총합 {market.total}원
+        {/* 임시계산값 */}총 상품금액 <b>{market.total}</b>원 <b>+</b> 배송비 <b>0</b> 원 <b>-</b> 할인금액
+        <b>0</b> 원 <b>=</b> 총합 <b>{market.total}</b>원
       </p>
     </div>
   ));
