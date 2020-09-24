@@ -6,7 +6,7 @@ import { ProductComment } from "../models";
 export default class CommentStore {
   @observable comments: ProductComment[] = [];
 
-  @observable commentsId = 0;
+  @observable commentsId = this.comments.length+1;
 
   @action
   putComment = (productId: number, name: string, comment: string) => {

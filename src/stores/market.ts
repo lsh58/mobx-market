@@ -93,7 +93,7 @@ export default class MarketStore {
     },
   ];
 
-  @observable productId = 0;
+  @observable productId = this.items.length+1;
 
   @action
   put = (id: number): void => {
