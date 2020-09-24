@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   category: {
     width: "50%",
-    margin: theme.spacing(0,'auto'),
+    margin: theme.spacing(0, "auto"),
     display: "flex",
     justifyContent: "space-between",
     "& a": {
@@ -23,8 +23,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   editBtn: {
     textDecoration: "none",
     "& button": {
+      background: theme.palette.primary.main,
+      color:'white',
       margin: theme.spacing(3, 0),
       fontWeight: "bold",
+      '&:hover':{
+        background: theme.palette.primary.dark,
+      }
     },
   },
 }));

@@ -65,7 +65,7 @@ interface BasketItemProps {
   onTake?: (product: ProductItem) => void;
   onIncrease?: (product: ProductItem) => void;
   onDecrease?: (product: ProductItem) => void;
-  onToggle?: (product: ProductItem) => void;
+  onToggle?: (id: number) => void;
 }
 
 const BasketItem: React.FC<BasketItemProps> = observer(
@@ -78,9 +78,10 @@ const BasketItem: React.FC<BasketItemProps> = observer(
   }) => {
     const classes = useStyles();
     const market = useMarketStore();
-    const count = market.selectedItems.find(
+    const selectedItem = market.selectedItems.find(
       (selectItem: BasketProductItem) => selectItem.id === item.id
-    ).count;
+    )
+    const count = selectedItem ? selectedItem.count : 0 ;
     const sum = count * item.price;
     return (
       <li className={classes.root}>
@@ -115,7 +116,7 @@ const BasketItem: React.FC<BasketItemProps> = observer(
           <button
             onClick={() => {
               onTake(item);
-              onToggle(item);
+              onToggle(item.id);
             }}
           >
             제거하기

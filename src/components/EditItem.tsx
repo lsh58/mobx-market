@@ -2,10 +2,10 @@ import React from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
 import { ProductItem } from "../models";
 import { observer } from "mobx-react";
-import Button from "@material-ui/core/Button";
+import { Button, IconButton } from "@material-ui/core";
 import { useLocalStore } from "mobx-react"; // 6.x
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
-import { useMarketStore } from "../stores/market";
+import EditIcon from "@material-ui/icons/Edit";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,12 +26,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: 25,
     },
   },
-  btnWrapper: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   selectBtnWrapper: {
     flex: 3,
     display: "flex",
@@ -44,19 +38,30 @@ const useStyles = makeStyles((theme: Theme) => ({
       marginLeft: "0.5rem",
     }, //값이 추가될경우를 고려할것
   },
-  removeBtn:{
-    color: theme.palette.secondary.main,
-    cursor:'pointer',
-  },
   editBtn: {
     background: theme.palette.primary.main,
-    borderRadius: 3,
     border: 0,
     color: "white",
+    width: 30,
     height: 30,
-    padding: theme.spacing(0, 1),
     "&:hover": {
-      background: theme.palette.primary.main,
+      background: theme.palette.primary.dark,
+    },
+    "& svg": {
+      fontSize: "1rem",
+    },
+  },
+  clearBtn: {
+    background: theme.palette.primary.main,
+    border: 0,
+    color: "white",
+    width: 30,
+    height: 30,
+    "&:hover": {
+      background: theme.palette.primary.dark,
+    },
+    "& svg": {
+      fontSize: "1.2rem",
     },
   },
   cancelBtn: {
@@ -75,14 +80,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface ShopItemProps {
   item: ProductItem;
   onEdit?: (product: ProductItem, name: string, price: number) => void;
-  onRemove?: (product: ProductItem) => void;
+  onClear?: (product: ProductItem) => void;
 }
 
 const EditItem: React.FC<ShopItemProps> = observer(
-  ({ item, onEdit = () => {}, onRemove = () => {} }) => {
+  ({ item, onEdit = () => {}, onClear = () => {} }) => {
     const classes = useStyles();
-    const market = useMarketStore();
-
     const edit = useLocalStore(() => ({
       isChange: false,
       name: "",
@@ -96,49 +99,50 @@ const EditItem: React.FC<ShopItemProps> = observer(
       onChangePrice(e: React.ChangeEvent<HTMLInputElement>) {
         edit.priceTxt = e.target.value;
       },
-      editMode(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        e.preventDefault();
+      editMode() {
         edit.isChange = true;
         edit.name = item.name;
         edit.priceTxt = `${item.price}`;
       },
-      onSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        e.preventDefault();
+      onSubmit() {
         const price = parseInt(edit.priceTxt);
         onEdit(item, edit.name, price);
         edit.isChange = false;
         edit.name = "";
         edit.priceTxt = "";
       },
-      onCancel(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        e.preventDefault();
+      onCancel() {
         edit.isChange = false;
         edit.name = "";
         edit.priceTxt = "";
       },
+      clear() {
+        onClear(item);
+      },
       get mode() {
         return !edit.isChange ? (
           <li>
-            <div className={classes.btnWrapper}>
-              <RemoveCircleOutlineIcon className={classes.removeBtn} />
-            </div>
             <span>{item.name}</span>
             <span>{item.price}</span>
             <div className={classes.selectBtnWrapper}>
-              <Button
+              <IconButton
                 size='small'
                 onClick={edit.editMode}
                 className={classes.editBtn}
               >
-                EDIT
-              </Button>
+                <EditIcon />
+              </IconButton>
+              <IconButton
+                size='small'
+                onClick={edit.clear}
+                className={classes.clearBtn}
+              >
+                <ClearIcon />
+              </IconButton>
             </div>
           </li>
         ) : (
           <li className={classes.root}>
-            <div className={classes.btnWrapper}>
-              <RemoveCircleOutlineIcon className={classes.removeBtn} onClick={market.onRemove(item)} />
-            </div>
             <div className={classes.inputWrapper}>
               <input
                 type='text'

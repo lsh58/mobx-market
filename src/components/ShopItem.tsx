@@ -1,22 +1,34 @@
 import React from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles"; // styles 기능 추가
-import { Typography, Grid, IconButton, Button } from "@material-ui/core";
+import {
+  Typography,
+  Grid,
+  IconButton,
+  Button,
+  TextField,
+} from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
-import { ProductItem } from "../models";
+import { ProductItem, ProductComment } from "../models";
 import { observer } from "mobx-react";
 import Modal from "@material-ui/core/Modal";
+import { useCommentStore } from "../stores/comment";
+import { useLocalStore } from "mobx-react"; // 6.x
+import Comment from "./Comment";
 
 const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   shopItem: {
     background: theme.palette.primary.light,
-    padding: theme.spacing(2),
     height: 200,
     position: "relative",
+    "&:hover div": {
+      display: "block",
+    },
   },
   cart: {
     position: "absolute",
+    zIndex: 100,
     top: 16,
     right: 16,
     color: theme.palette.primary.dark,
@@ -25,13 +37,33 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: "pointer",
   },
   infoWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
     marginBottom: 32,
+    position: "relative",
     "& button": {
       height: 30,
       marginRight: "1rem",
+    },
+  },
+  hoverWindow: {
+    position: "absolute",
+    zIndex: 50,
+    width: "100%",
+    height: "100%",
+    background: "rgba(0,0,0,0.1)",
+    display: "none",
+    "& button": {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%,-50%)",
+      border: "none",
+      outline: "none",
+      background: "none",
+      "& h4": {
+        color: "white",
+        fontWeight: "bold",
+        cursor: "pointer",
+      },
     },
   },
   textWrapper: {
@@ -55,7 +87,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
     top: "50%",
     left: "50%,",
     transform: `translate(50%, -50%)`,
@@ -63,60 +94,42 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
-  modalIndex: {
-    width: "100%",
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  indexName:{
-    flex:1
-  },
-  indexComment:{
-    flex:2
-  },
-  btnSpace :{
-    flex:1
-  },
   modalInput: {
+    flex: 1,
     width: "100%",
     display: "flex",
-    alignItems: "flex-end",
+    alignItems: "center",
     justifyContent: "center",
+    borderTop: "1px solid #eee",
+    padding: theme.spacing(2),
     "& h4": {
       fontWeight: "bold",
       marginRight: "2rem",
     },
-    "& input": {
-      outlineStyle: "none",
-      background: "none",
-      border: "none",
-      borderBottom: "1px solid #333",
-    },
     "& button": {
       flex: 1,
+      background: theme.palette.primary.main,
       fontWeight: "bold",
-      marginLeft: "5rem",
+      marginLeft: "2rem",
       color: "white",
+      height: 50,
     },
   },
-  modalName: {
-    flex: 1,
-    fontWeight: "bold",
-    marginRight: "1rem",
-    height: 30,
-    padding: "0 1rem",
-  },
-  modalComment: {
+  nameField: {
     flex: 2,
-    width: "50%",
     fontWeight: "bold",
     marginRight: "1rem",
-    height: 30,
-    padding: "0 1rem",
+    borderRadius: "5px",
   },
-  rateBtn: {
-    background: theme.palette.primary.light,
+  commentField: {
+    flex: 10,
+    fontWeight: "bold",
+    borderRadius: "5px",
+  },
+  modalContents: {
+    padding:theme.spacing(3),
+    flex: 10,
+    overflow:'auto'
   },
 }));
 
@@ -129,47 +142,88 @@ interface ShopItemProps {
 const ShopItem: React.FC<ShopItemProps> = observer(
   ({ item, onPut = () => {}, onToggle = () => {} }) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-    const body = (
-      <div className={classes.modalWrapper}>
-        <div className={classes.modalIndex}>
-          <Typography variant='h4' component='h4' className={classes.indexName}>
-            Name
-          </Typography>
-          <Typography variant='h4' component='h4' className={classes.indexComment}>
-            Comment
-          </Typography>
-          <div className={classes.btnSpace}></div>
-        </div>
-        <div className={classes.modalInput}>
-          <input
-            type='text'
-            placeholder='Name'
-            autoFocus
-            className={classes.modalName}
-          ></input>
-          <input
-            type='text'
-            placeholder='Comment'
-            className={classes.modalComment}
-          ></input>
-          <Button variant='contained' color='primary'>
-            후기등록
-          </Button>
-        </div>
-      </div>
-    );
+    const comment = useCommentStore();
+    const btnWrapper = useLocalStore(() => ({
+      open: false,
+      name: "",
+      comment: "",
+      itemId: 0,
+      handleOpen() {
+        btnWrapper.open = true;
+        btnWrapper.itemId = item.id;
+      },
+      handleClose() {
+        btnWrapper.open = false;
+      },
+      onSubmit() {
+        comment.putComment(
+          btnWrapper.itemId,
+          btnWrapper.name,
+          btnWrapper.comment
+        );
+      },
+      onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
+        btnWrapper.name = e.target.value;
+      },
+      onChangeComment(e: React.ChangeEvent<HTMLInputElement>) {
+        btnWrapper.comment = e.target.value;
+      },
+      get modalBtn() {
+        return (
+          <>
+            <button onClick={btnWrapper.handleOpen}>
+              <Typography variant='h4' component='h4'>
+                VIEW COMMENTS
+              </Typography>
+            </button>
+            <Modal
+              open={btnWrapper.open}
+              onClose={btnWrapper.handleClose}
+              aria-labelledby='simple-modal-title'
+              aria-describedby='simple-modal-description'
+            >
+              <div className={classes.modalWrapper}>
+                <div className={classes.modalContents}>
+                  {comment.comments
+                    .filter((comment: ProductComment) => {
+                      return comment.productId === item.id
+                    })
+                    .map((comment: ProductComment) => (
+                      <Comment comment={comment} key={comment.id} />
+                    ))}
+                </div>
+                <div className={classes.modalInput}>
+                  <TextField
+                    label='Name'
+                    variant='outlined'
+                    className={classes.nameField}
+                    onChange={btnWrapper.onChangeName}
+                  />
+                  <TextField
+                    label='Comment'
+                    variant='outlined'
+                    className={classes.commentField}
+                    onChange={btnWrapper.onChangeComment}
+                  />
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={btnWrapper.onSubmit}
+                  >
+                    SEND
+                  </Button>
+                </div>
+              </div>
+            </Modal>
+          </>
+        );
+      },
+    }));
 
     return (
       <Grid item lg={3} md={4} sm={4} xs={12}>
         <div className={classes.shopItem}>
+          <div className={classes.hoverWindow}>{btnWrapper.modalBtn}</div>
           <IconButton
             size='small'
             className={classes.cart}
@@ -192,21 +246,6 @@ const ShopItem: React.FC<ShopItemProps> = observer(
               {item.price} won
             </Typography>
           </div>
-          <Button
-            variant='contained'
-            onClick={handleOpen}
-            className={classes.rateBtn}
-          >
-            후기보기
-          </Button>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby='simple-modal-title'
-            aria-describedby='simple-modal-description'
-          >
-            {body}
-          </Modal>
         </div>
       </Grid>
     );

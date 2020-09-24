@@ -93,6 +93,8 @@ export default class MarketStore {
     },
   ];
 
+  @observable productId = 0;
+
   @action
   put = (id: number): void => {
     // 존재하는지 찾고
@@ -119,7 +121,7 @@ export default class MarketStore {
     if (itemToChange) {
       //toggle
       itemToChange.isInCart = !itemToChange.isInCart;
-    }
+    } //item중 selected에 담겨있는지 체크하게끔 바꾸면 분리가능
   };
 
   @action
@@ -166,23 +168,48 @@ export default class MarketStore {
   };
 
   @action
-  edit = (product: ProductItem, name: string, price: number) => {
+  edit = (product: ProductItem, userName: string, price: number) => {
     const itemToEdit = this.items.find((item) => item.id === product.id);
     if (itemToEdit) {
       //변경된 이름으로 변경
-      itemToEdit.name = name;
+      itemToEdit.name = userName;
       itemToEdit.price = price;
     }
   };
 
   @action
-  remove = (product:ProductItem)=>{
-    const itemToRemove = this.items.findIndex((item)=> item.id === product.id);
-    console.log(itemToRemove)
-    if(itemToRemove){
-      this.items.splice(itemToRemove, 1); // 배열에서 제거처리합니다.
+  add = (name: string, price: number) => {
+    this.items.push({
+      id: this.productId,
+      name: name,
+      price: price,
+      isInCart: false,
+      count: 1,
+    });
+    this.productId+=1;
+  };
+
+  @action
+  clear = (product: ProductItem) => {
+    const itemToClear = this.items.findIndex((item) => item.id === product.id);
+    if (itemToClear>=0) {
+      this.items.splice(itemToClear, 1); // 배열에서 제거처리합니다.
     }
-  }
+  };
+
+  @action
+  nameOrder = () => {
+    this.items = this.items.slice(0,this.items.length).sort((a, b) => {
+      return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+    });
+  };
+
+  @action
+  priceOrder = () => {
+    this.items = this.items.slice(0,this.items.length).sort((a, b) => {
+      return a.price - b.price;
+    });
+  };
 
   @computed
   get total(): number {
@@ -196,11 +223,12 @@ export default class MarketStore {
       //총합 계산
       (acc, selectedItem, i) => acc + selectedArr[i].price * selectedItem.count,
       0
-    );;
+    );
   }
 }
 
+
 export const useMarketStore = () => {
   const ctx = useContext(MobXProviderContext);
-  return ctx.market;
+  return ctx.market as MarketStore;
 };

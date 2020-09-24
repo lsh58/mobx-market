@@ -1,20 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'mobx-react'; // MobX 에서 사용하는 Provider
-import App from './App';
-import MarketStore from './stores/market';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "mobx-react"; // MobX 에서 사용하는 Provider
+import App from "./App";
+import MarketStore from "./stores/market";
+import CommentStore from "./stores/comment";
 import { ThemeProvider } from "@material-ui/styles";
-import theme from './consts/theme';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import theme from "./consts/theme";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const market = new MarketStore();
+const comment = new CommentStore();
 
 ReactDOM.render(
-  <Provider market={market}>
+  <Provider market={market} comment={comment}>
     <ThemeProvider theme={theme}>
-      <CssBaseline/>
+      <CssBaseline />
       <App />
     </ThemeProvider>
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById("root")
 );
