@@ -97,6 +97,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     top: "50%",
     left: "50%,",
     transform: `translate(50%, -50%)`,
+    outlineStyle:'none',
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -120,84 +121,70 @@ const useStyles = makeStyles((theme: Theme) => ({
 const EditItemList: React.FC = observer(() => {
   const classes = useStyles();
   const market = useMarketStore();
-  const btnWrapper = useLocalStore(() => ({
+  const state = useLocalStore(() => ({
     open: false,
     name: "",
     priceTxt: "",
-    handleOpen() {
-      btnWrapper.open = true;
-    },
-    handleClose() {
-      btnWrapper.open = false;
-    },
-    onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
-      btnWrapper.name = e.target.value;
-    },
-    onChangePrice(e: React.ChangeEvent<HTMLInputElement>) {
-      btnWrapper.priceTxt = e.target.value;
-    },
-    onSubmit() {
-      const price = parseInt(btnWrapper.priceTxt);
-      market.add(btnWrapper.name, price);
-    },
-    get topBtn() {
-      return (
-        <div className={classes.btnWrapper}>
-          <NavLink to='/' className={classes.homeBtn}>
-            <Button variant='contained' size='small' color='primary'>
-              수정완료
-            </Button>
-          </NavLink>
-          <Button
-            variant='contained'
-            size='small'
-            color='primary'
-            onClick={btnWrapper.handleOpen}
-            className={classes.addBtn}
-          >
-            상품추가
-          </Button>
-          <Modal
-            open={btnWrapper.open}
-            onClose={btnWrapper.handleClose}
-            aria-labelledby='simple-modal-title'
-            aria-describedby='simple-modal-description'
-          >
-            <form
-              className={classes.modalWrapper}
-              noValidate
-              autoComplete='off'
-            >
-              <TextField
-                label='상품명'
-                variant='outlined'
-                className={classes.nameField}
-                onChange={btnWrapper.onChangeName}
-              />
-              <TextField
-                label='가격'
-                type='number'
-                variant='outlined'
-                className={classes.priceField}
-                onChange={btnWrapper.onChangePrice}
-              />
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={btnWrapper.onSubmit}
-              >
-                상품등록
-              </Button>
-            </form>
-          </Modal>
-        </div>
-      );
-    },
   }));
-
+  const handleOpen = () => {
+    state.open = true;
+  };
+  const handleClose = () => {
+    state.open = false;
+  };
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    state.name = e.target.value;
+  };
+  const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    state.priceTxt = e.target.value;
+  };
+  const onSubmit = () => {
+    const price = parseInt(state.priceTxt);
+    market.add(state.name, price);
+  };
   return (
     <div className={classes.root}>
-      {btnWrapper.topBtn}
+      <div className={classes.btnWrapper}>
+        <NavLink to='/' className={classes.homeBtn}>
+          <Button variant='contained' size='small' color='primary'>
+            수정완료
+          </Button>
+        </NavLink>
+        <Button
+          variant='contained'
+          size='small'
+          color='primary'
+          onClick={handleOpen}
+          className={classes.addBtn}
+        >
+          상품추가
+        </Button>
+        <Modal
+          open={state.open}
+          onClose={handleClose}
+          aria-labelledby='simple-modal-title'
+          aria-describedby='simple-modal-description'
+        >
+          <form className={classes.modalWrapper} noValidate autoComplete='off'>
+            <TextField
+              label='상품명'
+              variant='outlined'
+              className={classes.nameField}
+              onChange={onChangeName}
+            />
+            <TextField
+              label='가격'
+              type='number'
+              variant='outlined'
+              className={classes.priceField}
+              onChange={onChangePrice}
+            />
+            <Button variant='contained' color='primary' onClick={onSubmit}>
+              상품등록
+            </Button>
+          </form>
+        </Modal>
+      </div>
       <ul className={classes.editList}>
         <li className={classes.indexTab}>
           <span className={classes.index}>
@@ -205,7 +192,7 @@ const EditItemList: React.FC = observer(() => {
               상품명
             </Typography>
             <button>
-              <ImportExportIcon onClick={market.nameOrder}/>
+              <ImportExportIcon onClick={market.nameOrder} />
             </button>
           </span>
           <span className={classes.index}>
@@ -213,7 +200,7 @@ const EditItemList: React.FC = observer(() => {
               가격
             </Typography>
             <button>
-              <ImportExportIcon onClick={market.priceOrder}/>
+              <ImportExportIcon onClick={market.priceOrder} />
             </button>
           </span>
           <div className={classes.btnSpace2}></div>

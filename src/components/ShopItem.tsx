@@ -87,6 +87,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],
+    outlineStyle:'none',
     top: "50%",
     left: "50%,",
     transform: `translate(50%, -50%)`,
@@ -127,9 +128,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: "5px",
   },
   modalContents: {
-    padding:theme.spacing(3),
+    padding: theme.spacing(3),
     flex: 10,
-    overflow:'auto'
+    overflow: "auto",
   },
 }));
 
@@ -148,37 +149,40 @@ const ShopItem: React.FC<ShopItemProps> = observer(
       name: "",
       comment: "",
       itemId: 0,
-      handleOpen() {
-        btnWrapper.open = true;
-        btnWrapper.itemId = item.id;
-      },
-      handleClose() {
-        btnWrapper.open = false;
-      },
-      onSubmit() {
-        comment.putComment(
-          btnWrapper.itemId,
-          btnWrapper.name,
-          btnWrapper.comment
-        );
-      },
-      onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
-        btnWrapper.name = e.target.value;
-      },
-      onChangeComment(e: React.ChangeEvent<HTMLInputElement>) {
-        btnWrapper.comment = e.target.value;
-      },
-      get modalBtn() {
-        return (
-          <>
-            <button onClick={btnWrapper.handleOpen}>
+    }));
+    const handleOpen = () => {
+      btnWrapper.open = true;
+      btnWrapper.itemId = item.id;
+    };
+    const handleClose = () => {
+      btnWrapper.open = false;
+    };
+    const onSubmit = () => {
+      comment.putComment(
+        btnWrapper.itemId,
+        btnWrapper.name,
+        btnWrapper.comment
+      );
+    };
+    const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+      btnWrapper.name = e.target.value;
+    };
+    const onChangeComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+      btnWrapper.comment = e.target.value;
+    };
+
+    return (
+      <Grid item lg={3} md={4} sm={4} xs={12}>
+        <div className={classes.shopItem}>
+          <div className={classes.hoverWindow}>
+            <button onClick={handleOpen}>
               <Typography variant='h4' component='h4'>
                 VIEW COMMENTS
               </Typography>
             </button>
             <Modal
               open={btnWrapper.open}
-              onClose={btnWrapper.handleClose}
+              onClose={handleClose}
               aria-labelledby='simple-modal-title'
               aria-describedby='simple-modal-description'
             >
@@ -186,7 +190,7 @@ const ShopItem: React.FC<ShopItemProps> = observer(
                 <div className={classes.modalContents}>
                   {comment.comments
                     .filter((comment: ProductComment) => {
-                      return comment.productId === item.id
+                      return comment.productId === item.id;
                     })
                     .map((comment: ProductComment) => (
                       <Comment comment={comment} key={comment.id} />
@@ -197,33 +201,25 @@ const ShopItem: React.FC<ShopItemProps> = observer(
                     label='Name'
                     variant='outlined'
                     className={classes.nameField}
-                    onChange={btnWrapper.onChangeName}
+                    onChange={onChangeName}
                   />
                   <TextField
                     label='Comment'
                     variant='outlined'
                     className={classes.commentField}
-                    onChange={btnWrapper.onChangeComment}
+                    onChange={onChangeComment}
                   />
                   <Button
                     variant='contained'
                     color='primary'
-                    onClick={btnWrapper.onSubmit}
+                    onClick={onSubmit}
                   >
                     SEND
                   </Button>
                 </div>
               </div>
             </Modal>
-          </>
-        );
-      },
-    }));
-
-    return (
-      <Grid item lg={3} md={4} sm={4} xs={12}>
-        <div className={classes.shopItem}>
-          <div className={classes.hoverWindow}>{btnWrapper.modalBtn}</div>
+          </div>
           <IconButton
             size='small'
             className={classes.cart}

@@ -90,97 +90,78 @@ const EditItem: React.FC<ShopItemProps> = observer(
       isChange: false,
       name: "",
       priceTxt: "",
-      toggle() {
-        edit.isChange = !edit.isChange;
-      },
-      onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
-        edit.name = e.target.value;
-      },
-      onChangePrice(e: React.ChangeEvent<HTMLInputElement>) {
-        edit.priceTxt = e.target.value;
-      },
-      editMode() {
-        edit.isChange = true;
-        edit.name = item.name;
-        edit.priceTxt = `${item.price}`;
-      },
-      onSubmit() {
-        const price = parseInt(edit.priceTxt);
-        onEdit(item, edit.name, price);
-        edit.isChange = false;
-        edit.name = "";
-        edit.priceTxt = "";
-      },
-      onCancel() {
-        edit.isChange = false;
-        edit.name = "";
-        edit.priceTxt = "";
-      },
-      clear() {
-        onClear(item);
-      },
-      get mode() {
-        return !edit.isChange ? (
-          <li>
-            <span>{item.name}</span>
-            <span>{item.price}</span>
-            <div className={classes.selectBtnWrapper}>
-              <IconButton
-                size='small'
-                onClick={edit.editMode}
-                className={classes.editBtn}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                size='small'
-                onClick={edit.clear}
-                className={classes.clearBtn}
-              >
-                <ClearIcon />
-              </IconButton>
-            </div>
-          </li>
-        ) : (
-          <li className={classes.root}>
-            <div className={classes.inputWrapper}>
-              <input
-                type='text'
-                autoFocus
-                value={edit.name}
-                onChange={edit.onChangeName}
-              ></input>
-            </div>
-            <div className={classes.inputWrapper}>
-              <input
-                type='number'
-                step='10'
-                value={edit.priceTxt}
-                onChange={edit.onChangePrice}
-              ></input>
-            </div>
-            <div className={classes.selectBtnWrapper}>
-              <Button
-                size='small'
-                onClick={edit.onSubmit}
-                className={classes.editBtn}
-              >
-                변경
-              </Button>
-              <Button
-                size='small'
-                onClick={edit.onCancel}
-                className={classes.cancelBtn}
-              >
-                취소
-              </Button>
-            </div>
-          </li>
-        );
-      },
     }));
-
-    return <>{edit.mode}</>;
+    const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+      edit.name = e.target.value;
+    };
+    const onChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+      edit.priceTxt = e.target.value;
+    };
+    const editMode = () => {
+      edit.isChange = true;
+      edit.name = item.name;
+      edit.priceTxt = `${item.price}`;
+    };
+    const onSubmit = () => {
+      const price = parseInt(edit.priceTxt);
+      onEdit(item, edit.name, price);
+      edit.isChange = false;
+      edit.name = "";
+      edit.priceTxt = "";
+    };
+    const onCancel = () => {
+      edit.isChange = false;
+      edit.name = "";
+      edit.priceTxt = "";
+    };
+    const clear = () => {
+      onClear(item);
+    };
+    return !edit.isChange ? (
+      <li>
+        <span>{item.name}</span>
+        <span>{item.price}</span>
+        <div className={classes.selectBtnWrapper}>
+          <IconButton
+            size='small'
+            onClick={editMode}
+            className={classes.editBtn}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton size='small' onClick={clear} className={classes.clearBtn}>
+            <ClearIcon />
+          </IconButton>
+        </div>
+      </li>
+    ) : (
+      <li className={classes.root}>
+        <div className={classes.inputWrapper}>
+          <input
+            type='text'
+            autoFocus
+            value={edit.name}
+            onChange={onChangeName}
+          ></input>
+        </div>
+        <div className={classes.inputWrapper}>
+          <input
+            type='number'
+            step='10'
+            value={edit.priceTxt}
+            onChange={onChangePrice}
+          ></input>
+        </div>
+        <div className={classes.selectBtnWrapper}>
+          <Button size='small' onClick={onSubmit} className={classes.editBtn}>
+            변경
+          </Button>
+          <Button size='small' onClick={onCancel} className={classes.cancelBtn}>
+            취소
+          </Button>
+        </div>
+      </li>
+    );
   }
 );
 
