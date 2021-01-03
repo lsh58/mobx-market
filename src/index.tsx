@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "mobx-react"; // MobX 에서 사용하는 Provider
-import App from "./App";
+import MainPage from "./MainPage";
 import MarketStore from "./stores/market";
 import CommentStore from "./stores/comment";
 import { ThemeProvider } from "@material-ui/styles";
@@ -15,7 +15,7 @@ ReactDOM.render(
   <Provider market={market} comment={comment}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <MainPage />
     </ThemeProvider>
   </Provider>,
   document.getElementById("root")

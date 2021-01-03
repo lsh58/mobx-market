@@ -19,7 +19,6 @@ import Comment from "./Comment";
 const useStyles = makeStyles((theme: Theme) => ({
   // style 요소 선언
   shopItem: {
-    background: theme.palette.primary.light,
     height: 200,
     position: "relative",
     "&:hover div": {
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 100,
     top: 16,
     right: 16,
-    color: theme.palette.primary.dark,
     border: "none",
     outlineStyle: "none",
     cursor: "pointer",
@@ -87,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
     boxShadow: theme.shadows[5],
-    outlineStyle:'none',
+    outlineStyle: "none",
     top: "50%",
     left: "50%,",
     transform: `translate(50%, -50%)`,
@@ -176,15 +174,15 @@ const ShopItem: React.FC<ShopItemProps> = observer(
         <div className={classes.shopItem}>
           <div className={classes.hoverWindow}>
             <button onClick={handleOpen}>
-              <Typography variant='h4' component='h4'>
+              <Typography variant="h4" component="h4">
                 VIEW COMMENTS
               </Typography>
             </button>
             <Modal
               open={btnWrapper.open}
               onClose={handleClose}
-              aria-labelledby='simple-modal-title'
-              aria-describedby='simple-modal-description'
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
             >
               <div className={classes.modalWrapper}>
                 <div className={classes.modalContents}>
@@ -198,20 +196,20 @@ const ShopItem: React.FC<ShopItemProps> = observer(
                 </div>
                 <div className={classes.modalInput}>
                   <TextField
-                    label='Name'
-                    variant='outlined'
+                    label="Name"
+                    variant="outlined"
                     className={classes.nameField}
                     onChange={onChangeName}
                   />
                   <TextField
-                    label='Comment'
-                    variant='outlined'
+                    label="Comment"
+                    variant="outlined"
                     className={classes.commentField}
                     onChange={onChangeComment}
                   />
                   <Button
-                    variant='contained'
-                    color='primary'
+                    variant="contained"
+                    color="primary"
                     onClick={onSubmit}
                   >
                     SEND
@@ -221,7 +219,7 @@ const ShopItem: React.FC<ShopItemProps> = observer(
             </Modal>
           </div>
           <IconButton
-            size='small'
+            size="small"
             className={classes.cart}
             onClick={() => {
               onPut(item.id);
@@ -229,16 +227,16 @@ const ShopItem: React.FC<ShopItemProps> = observer(
             }}
           >
             {item.isInCart === false ? (
-              <ShoppingCartIcon color='primary'></ShoppingCartIcon>
+              <ShoppingCartIcon color="primary"></ShoppingCartIcon>
             ) : (
-              <RemoveShoppingCartIcon color='secondary'></RemoveShoppingCartIcon>
+              <RemoveShoppingCartIcon color="secondary"></RemoveShoppingCartIcon>
             )}
           </IconButton>
         </div>
         <div className={classes.infoWrapper}>
           <div className={classes.textWrapper}>
-            <Typography variant='h6'>{item.name}</Typography>
-            <Typography className='price' variant='body1'>
+            <Typography variant="h6">{item.name}</Typography>
+            <Typography className="price" variant="body1">
               {item.price} won
             </Typography>
           </div>
